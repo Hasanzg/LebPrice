@@ -1,0 +1,12 @@
+
+{% load static %}
+
+{% block content %}
+  <h2>Delete Your Account</h2>
+  <p>This action is irreversible. Are you sure you want to permanently delete your account?</p>
+  <form method="POST">
+    {% csrf_token %}
+    <button type="submit" style="color: red;">Yes, delete my account</button>
+  </form>
+  <a href="{% url 'home' %}">Cancel</a>
+{% endblock %}

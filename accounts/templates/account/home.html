@@ -1,0 +1,7 @@
+{% load socialaccount %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+  <h2>Welcome, {{ user.username }}</h2>
+    <a href="{% url 'account_logout' %}">Logout</a></p>
+    <a href="{% url 'account_delete' %}">Delete My Account</a>
+{% endblock %}

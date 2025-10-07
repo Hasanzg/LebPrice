@@ -1,0 +1,17 @@
+{% load socialaccount %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+</head>
+<body>
+    <h1>Welcome! Bye lets go hi</h1>
+    {% if user.is_authenticated %}
+        <p>Hello {{ user.username }} | <a href="{% url 'account_logout' %}">Logout</a></p>
+    {% else %}
+        <p><a href="{% url 'account_login' %}">Login</a> | <a href="{% url 'account_signup' %}">Signup</a></p>
+    {% endif %}
+
+
+</body>
+</html>
