@@ -22,7 +22,7 @@
         {% element form form=form method="post" action=login_url tags="entrance,login" %}
             {% slot body %}
                 {% csrf_token %}
-                {% element fields form=form unlabeled=True %}
+                {% element fields form=form unlabeled=True%}
                 {% endelement %}
                 {{ redirect_field }}
             {% endslot %}
@@ -50,7 +50,9 @@
         {% endelement %}
     {% endif %}
     {% if SOCIALACCOUNT_ENABLED %}
+        <div class="social-login">
         {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+        </div>
     {% endif %}
 {% endblock content %}
 {% block extra_body %}
