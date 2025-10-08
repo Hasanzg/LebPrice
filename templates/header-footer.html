@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block extra_head_main %}
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+{% endblock %}
+{% block content_main %}
+  <header>
+    <div class="logo">
+      <img src="logo.png" alt="LebPrice Logo">
+    </div>
+
+    <div class="search-bar">
+      <input type="text" placeholder="Search products, stores..." />
+      <button>🔍</button>
+    </div>
+
+    <div class="header-actions">
+      <a href="#" class="cart">🛒 Cart</a>  
+
+      <div class="dropdown-wrapper">
+        <a href="#" class="profile">👤 Profile ▾</a>
+        <div class="the-dropdown">
+          <a href="#">My Account</a>
+          <a href="#">Settings</a>
+          <a href="{% url 'account_logout' %}" class="bad">Sign Out</a>
+          <a href="{% url 'account_delete' %}" class="bad">Delete Account</a>
+        </div>
+      </div> <!-- close profile-wrapper -->
+    </div> <!-- close header-actions -->
+  </header>
+
+  <nav class="categories">
+    <a href="#">Home</a>
+    <a href="#">Groceries</a>
+    <a href="#">Electronics</a>
+    <a href="#">Sports</a>
+    <a href="#">Fashion</a>
+    <a href="#">Fashion2</a>
+  </nav>
+
+  {% block content %}{% endblock %}
+
+  <footer>
+    <p>📍 Beirut, Lebanon | 📧 lebprice.project@gmail.com</p>
+  </footer>
+{% endblock %}

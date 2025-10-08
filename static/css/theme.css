@@ -1,0 +1,893 @@
+/* ===== Theme Variables ===== */
+:root {
+  --bg: #f7f7f9;
+  --card-bg: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.6);
+  --cedar-green: #0c3b2e;
+  --flag-red: #b30e0e;
+  --muted: #6b6b6b;
+  --accent-shadow: 0 8px 20px rgba(12, 59, 46, 0.08);
+  --radius: 14px;
+  --max-width: 1200px;
+  --gap: 20px;
+  --header-height: 72px;
+  --transition: 200ms ease;
+  --text: #222;
+  --mobile-break: 720px;
+}
+
+h1 {
+  font-size: clamp(1.8rem, 2.5vw, 2.8rem);
+  font-weight: 700;
+  text-align: left;
+  text-shadow: 0 2px 6px rgba(12, 59, 46, 0.1);
+  letter-spacing: 0.5px;
+}
+
+h1 .leb { color: var(--flag-red); }
+h1 .price { color: var(--cedar-green); }
+
+p {
+  font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+  color: var(--text);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  letter-spacing: 0.2px;
+  text-align: justify;
+}
+
+p a {
+  text-decoration: none;
+  color: var(--cedar-green);
+  transition: color 0.2s ease;
+}
+
+p a:hover {
+  color: var(--flag-red);
+}
+
+/* ===== Reset & Base ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: linear-gradient(120deg, var(--bg) 0%, #fff 100%);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.35;
+}
+
+body {
+  display: flex;
+  flex-direction: column;   
+  min-height: 100vh;
+  padding-bottom: 40px;
+  align-items: center;
+}
+
+/* ===== Container ===== */
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ===== Header ===== */
+header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap);
+  padding: 12px 20px;
+  height: var(--header-height);
+  position: fixed;
+  top: 0;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(6px);
+  border-radius: var(--radius);
+  border: 1px solid rgba(12, 59, 46, 0.04);
+  box-shadow: var(--accent-shadow);
+  z-index: 100;
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 100%;
+}
+
+.logo img {
+  height: 300%;
+  width: auto;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+.logo h1 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.logo .leb { color: var(--flag-red); }
+.logo .price { color: var(--cedar-green); }
+
+/* Search */
+.search-bar {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-bar input {
+  width: 70%;
+  min-width: 220px;
+  max-width: 720px;
+  padding: 12px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 6px 18px rgba(15,15,15,0.03);
+  font-size: 0.98rem;
+  outline: none;
+  transition: box-shadow var(--transition), transform var(--transition);
+}
+
+.search-bar input:focus {
+  box-shadow: 0 10px 30px rgba(12, 59, 46, 0.08);
+  transform: translateY(-2px);
+}
+
+.search-bar button {
+  margin-left: 10px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: none;
+  font-weight: 600;
+  background: linear-gradient(180deg, var(--cedar-green), #1a6a54);
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(12, 59, 46, 0.12);
+  transition: transform var(--transition);
+}
+
+.search-bar button:active {
+  transform: scale(0.98);
+}
+
+/* Header Actions */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-actions a {
+  text-decoration: none;
+  color: var(--muted);
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 10px;
+  transition: background var(--transition), color var(--transition), transform var(--transition);
+}
+
+.header-actions a:hover {
+  color: var(--cedar-green);
+  background: rgba(12, 59, 46, 0.03);
+  transform: translateY(-3px);
+}
+
+/* ===== Categories ===== */
+.categories {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+  margin-top: 12px;
+  border-radius: var(--radius);
+  background: linear-gradient(90deg, rgba(179,14,14,0.03), rgba(12,59,46,0.02));
+  border: 1px solid rgba(0,0,0,0.03);
+  top: var(--header-height);
+  z-index: 90;
+  padding-top: var(--header-height);
+}
+
+.categories a {
+  text-decoration: none;
+  padding: 8px 14px;
+  font-weight: 600;
+  color: var(--cedar-green);
+  border-radius: 999px;
+  transition: background var(--transition), color var(--transition);
+}
+
+.categories a:hover {
+  background: rgba(179, 14, 14, 0.06);
+  color: var(--flag-red);
+}
+
+/* ===== Products Grid ===== */
+.products {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+  padding: 40px 20px;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.product-card {
+  background: var(--card-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: calc(var(--radius) - 2px);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 220px;
+  min-height: 260px;
+  box-shadow: 0 10px 24px rgba(20,20,20,0.03);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 18px 40px rgba(12,59,46,0.08);
+}
+
+.product-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.product-card h3 {
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.product-card .store {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.product-card .price {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--flag-red);
+}
+
+.product-card button {
+  margin-top: auto;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(90deg,var(--cedar-green), #1a6a54);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(12,59,46,0.1);
+  transition: transform var(--transition);
+}
+
+.product-card button:active {
+  transform: scale(0.98);
+}
+
+/* ===== Footer ===== */
+footer {
+  width: 100%;
+  margin-top: 28px;
+  padding: 18px;
+  border-radius: var(--radius);
+  background: linear-gradient(90deg, var(--cedar-green), #13483a);
+  box-shadow: 0 10px 30px rgba(12,59,46,0.12);
+}
+
+footer p {
+  text-align: center;
+  color: #fff;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1100px) {
+  .products { justify-content: center; gap: 20px; }
+  .search-bar input { width: 80%; }
+}
+
+@media (max-width: 720px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto;
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .search-bar input { width: 92%; min-width: unset; }
+  .products { flex-direction: column; padding: 12px; gap: 16px; }
+  .logo h1 { font-size: 1rem; }
+  .header-actions { width: 100%; justify-content: space-between; }
+  .categories { padding: 8px; gap: 8px; }
+}
+
+/* ===== Accessibility ===== */
+a, button { outline-color: rgba(12,59,46,0.18); }
+
+
+/* ====== Form Container ====== */
+.signin-container {
+  max-width: 40%;
+  margin: auto auto;
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  padding: 2rem 2.5rem;
+  text-align: center;
+}
+
+/* ====== Title ====== */
+.signin-container h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--cedar-green);
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.signin-container p {
+  font-size: 0.95rem;
+  color: var(--text);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* ====== Form Fields ====== */
+.signin-container label {
+  display: block;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.1rem;
+}
+
+.signin-container input[type="text"],
+.signin-container input[type="email"],
+.signin-container input[type="password"] {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  font-size: 1rem;
+  color: var(--text);
+  transition: all 0.2s ease;
+}
+
+.signin-container input:focus {
+  border-color: var(--cedar-green);
+  box-shadow: 0 0 0 3px rgba(12, 59, 46, 0.15);
+  outline: none;
+}
+
+/* ====== Checkbox and Remember Me ====== */
+/* Container: align checkbox and label inline */
+.signin-container label[for="id_remember"],
+.signin-container #id_remember {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem; /* space between checkbox and label */
+}
+
+/* Checkbox itself */
+.signin-container #id_remember {
+    appearance: none; /* remove default browser style */
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--cedar-green);
+    border-radius: 4px;
+    position: relative;
+    cursor: pointer;
+    margin: 0;
+    flex-shrink: 0;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+/* Checked state with background */
+.signin-container #id_remember:checked {
+    background-color: var(--cedar-green);
+    border-color: var(--cedar-green);
+}
+
+/* Checkmark - centered */
+.signin-container #id_remember:checked::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 4px;
+    height: 10px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: translate(-50%, -60%) rotate(45deg);
+}
+
+/* Checkbox hover/focus effect */
+.signin-container #id_remember:hover {
+    border-color: #1a6a54; /* slightly darker green on hover */
+}
+
+/* Optional: Also change background on hover when checked */
+.signin-container #id_remember:checked:hover {
+    background-color: #1a6a54;
+    border-color: #1a6a54;
+}
+
+.signin-container #id_remember:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(12, 59, 46, 0.2);
+}
+
+/* Label styling */
+.signin-container label[for="id_remember"] {
+    order: 2; /* after checkbox */
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: var(--text);
+}
+
+/* Container: align checkbox and label inline */
+.signin-container label[for="id_remember"],
+.signin-container #id_remember {
+    display: inline-flex;
+    vertical-align: middle; /* This is the key line */
+}
+
+.signin-container label[for="id_remember"] {
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: var(--text);
+    margin: 0;
+    line-height: 1; /* Ensure consistent line height */
+}
+
+.signin-container #id_remember {
+    /* ... rest of your checkbox styles ... */
+    vertical-align: middle; /* Align with the label */
+}
+
+/* ====== Buttons ====== */
+.signin-container button {
+  width: 100%;
+  background: linear-gradient(90deg, var(--cedar-green), #1a6a54);
+  color: #fff;
+  border: none;
+  padding: 0.8rem;
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(12, 59, 46, 0.1); /* subtle shadow for depth */
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.3s ease;
+}
+
+.signin-container button:hover {
+  /* Slightly darker gradient on hover */
+  filter: brightness(1.1);
+  transform: scale(1.02);
+  box-shadow: 0 12px 28px rgba(12, 59, 46, 0.15);
+}
+
+.signin-container [data-slot="actions"],
+.signin-container .actions {
+  display: flex;
+  flex-direction: column; /* stack vertically (optional) */
+  gap: 12px; /* space between buttons */
+}
+
+
+
+/* ====== Divider for Third-party Login ====== */
+/* ===== Social Login Wrapper ===== */
+.signin-container .social-login {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+/* ===== Divider (h2 "Or use a third-party") ===== */
+.signin-container .social-login h2 {
+    font-size: 1rem;           /* same scale as other text */
+    font-weight: 600;
+    color: var(--muted);
+    margin: 1.5rem 0;
+    position: relative;
+}
+
+
+/* ===== Social Buttons List ===== */
+.signin-container .social-login ul {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 0 0;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* ===== Individual Button ===== */
+/* Social buttons styled like form button but red */
+.signin-container .social-login ul li a {
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #fff;
+    background: linear-gradient(90deg, var(--flag-red), #9a0b0b); /* red gradient */
+    box-shadow: 0 8px 20px rgba(12, 59, 46, 0.1);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Hover effect */
+.signin-container .social-login ul li a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 40px rgba(12, 59, 46, 0.08);
+    background: linear-gradient(90deg, #b30e0e, #7d0a0a); /* slightly darker red on hover */
+}
+
+/* Active/click effect */
+.signin-container .social-login ul li a:active {
+    transform: scale(0.98);
+    box-shadow: 0 8px 20px rgba(12, 59, 46, 0.1);
+}
+
+
+/* ===== Responsive ===== */
+@media (max-width: 720px) {
+    .signin-container .social-login ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+/* ===== Green button style (Login / Signup / form style) ===== */
+.btn-green {
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #fff;
+    background: linear-gradient(90deg, var(--cedar-green), #1a6a54);
+    box-shadow: 0 8px 20px rgba(12, 59, 46, 0.1);
+    text-decoration: none;
+    display: inline-block;
+    margin: 0 6px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-green:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 40px rgba(12, 59, 46, 0.08);
+    background: linear-gradient(90deg, #0b2f24, #145443); /* darker green hover */
+}
+
+.btn-green:active {
+    transform: scale(0.98);
+    box-shadow: 0 8px 20px rgba(12, 59, 46, 0.1);
+}
+
+/* ===== Red button style (Google / social style) ===== */
+.btn-red, .login-wrapper form button {
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #fff;
+    background: linear-gradient(90deg, var(--flag-red), #9a0b0b);
+    box-shadow: 0 8px 20px rgba(12, 59, 46, 0.1);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    margin-top: 1rem;
+}
+
+.btn-red:hover, .login-wrapper form button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 40px rgba(12, 59, 46, 0.08);
+    background: linear-gradient(90deg, #b30e0e, #7d0a0a); /* darker red hover */
+}
+
+
+.btn-red:active, .login-wrapper form button:active {
+    transform: scale(0.98);
+    box-shadow: 0 8px 20px rgba(12, 59, 46, 0.1);
+}
+
+.btn-cancel {
+  padding: 10px 14px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #fff;
+    background: linear-gradient(90deg, var(--flag-red), #9a0b0b);
+    box-shadow: 0 8px 20px rgba(12, 59, 46, 0.1);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    margin-top: 1rem;
+}
+
+.btn-cancel:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 18px 40px rgba(12, 59, 46, 0.08);
+    background: linear-gradient(90deg, #0b2f24, #145443); /* darker green hover */
+}
+
+
+.btn-cancel:active {
+    transform: scale(0.98);
+    box-shadow: 0 8px 20px rgba(12, 59, 46, 0.1);
+}
+
+
+/*for localhost:8000/*/
+/* ===== Container ===== */
+.login-wrapper {
+    width: 40%;        /* controls width of the form */
+    margin: auto auto;       /* center on page vertically */
+    padding: 40px 30px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 16px;
+    box-shadow: 0 12px 40px rgba(12, 59, 46, 0.08);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;               /* spacing between elements */
+}
+/* ===== Button group width matches Google button ===== */
+.login-wrapper .btn-group {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;          /* same as container / Google button */
+    max-width: 100%;      
+}
+
+/* Make each green button half the width minus the gap */
+.login-wrapper .btn-group .btn-green {
+    flex: 1;              /* takes equal space */
+    margin: 0;            /* remove horizontal margin */
+}
+
+/* Add gap between green buttons */
+.login-wrapper .btn-group .btn-green + .btn-green {
+    margin-left: 12px;    /* spacing between the two green buttons */
+}
+
+/* Make Google button full width */
+.login-wrapper .btn-red {
+    width: 100%;
+    margin-top: 12px;
+}
+
+/* ===== H2 inside login wrapper ===== */
+.login-wrapper h2 {
+    font-size: 1.25rem;          /* slightly smaller than main H1 */
+    font-weight: 600;
+    color: var(--cedar-green);   /* theme green */
+    text-align: center;
+    margin: 20px 0 12px 0;       /* spacing above and below */
+    position: relative;
+}
+
+.login-wrapper h1 {
+  text-align: center;
+}
+
+.login-wrapper p {
+  font-size: 0.95rem;
+  color: var(--text);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* ===== Allauth error messages (plain UL in the form) ===== */
+.signin-container form ul {
+    list-style: none;              /* remove bullets */
+    padding: 10px 14px;
+    margin: 8px 0 0 0;
+    border-radius: 10px;
+    background-color: rgba(179, 14, 14, 0.1); /* light red bg */
+    color: var(--flag-red);        /* theme red */
+    font-size: 0.9rem;
+    text-align: left;
+}
+
+/* Each error item */
+.signin-container form ul li {
+    margin-bottom: 4px;
+}
+
+/* Optional icons for errors */
+.signin-container form ul li::before {
+    content: "⚠️ ";
+    margin-right: 4px;
+}
+
+.Leb {
+    color: var(--flag-red);      /* theme red */
+}
+
+.Price {
+    color: var(--cedar-green);      /* theme red */
+}
+
+.messages-container {
+    width: 100%;
+    margin: 1rem 0;          /* spacing above and below */
+    background-color: #f8f9fa; /* light gray background */
+    border-left: 4px solid #4caf50; /* colored border for emphasis */
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    font-family: sans-serif;
+    color: #333;
+    text-align: left;
+}
+
+.messages-container ul {
+    list-style:none;  /* nice bullet style */
+    margin: 0;
+    margin-top: 0.5rem;
+    padding-left: 1rem;
+}
+
+.messages-container li {
+    margin-bottom: 0.5rem;    /* spacing between messages */
+}
+
+.messages-container li button {
+    margin-left: 1rem;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.85rem;
+    cursor: pointer;
+    border: none;
+    background-color: #4caf50;
+    color: white;
+    border-radius: 4px;
+}
+
+.messages-container li button:hover {
+    background-color: #45a049;
+}
+
+
+img.first-page-img {
+    width: 100%;   /* fill container width */
+    aspect-ratio: 3 / 1;  /* keep aspect ratio */
+    display: block;
+    margin: 0 auto; /* center */    
+    object-fit:contain;  /* ensures no cropping/scaling */
+    padding: 0;
+}
+
+.center-p-indiv p {
+  text-align: center;
+}
+
+/* Profile wrapper */
+.dropdown-wrapper {
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+}
+
+/* Profile button styling */
+.dropdown-wrapper > a.profile {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  color: var(--muted);
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+  white-space: nowrap;
+  min-width: 140px; /* Set a fixed minimum width */
+}
+
+/* Dropdown */
+.the-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  z-index: 1000;
+  padding: 8px 0;
+  overflow: hidden;
+  width: max-content;
+  min-width: 140px; /* Same as profile button */
+}
+
+/* Show dropdown on hover */
+.dropdown-wrapper:hover .the-dropdown {
+  display: block;
+}
+
+/* Dropdown links */
+.the-dropdown a {
+  display: block;
+  padding: 10px 16px;
+  text-decoration: none;
+  color: var(--text);
+  transition: background 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
+  border: none;
+  margin: 0;
+  width: 100%;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.the-dropdown a:hover {
+  background: rgba(12, 59, 46, 0.08);
+  color: var(--cedar-green);
+}
+
+/* Logout styling */
+.the-dropdown a.bad {
+  border-top: 1px solid var(--glass-border);
+  color: #c0392b;
+  font-weight: 600;
+  margin-top: 4px;
+  padding-top: 12px;
+}
+
+.the-dropdown a.bad:hover {
+  background: rgba(179, 14, 14, 0.08);
+  color: #b30e0e;
+}
+
+.dropdown-wrapper > a.profile:hover {
+  color: var(--cedar-green);
+  background: rgba(12, 59, 46, 0.03);
+  transform: translateY(-3px);
+}

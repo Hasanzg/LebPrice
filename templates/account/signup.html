@@ -40,6 +40,8 @@
         {% endelement %}
     {% endif %}
     {% if SOCIALACCOUNT_ENABLED %}
+        <div class="social-login">
         {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+        </div>
     {% endif %}
 {% endblock content %}

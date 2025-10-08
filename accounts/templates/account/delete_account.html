@@ -1,12 +1,14 @@
-
+{% extends "base.html" %}
 {% load static %}
 
-{% block content %}
+{% block content_main %}
+  <div class="signin-container">
   <h2>Delete Your Account</h2>
   <p>This action is irreversible. Are you sure you want to permanently delete your account?</p>
   <form method="POST">
     {% csrf_token %}
-    <button type="submit" style="color: red;">Yes, delete my account</button>
+    <button type="submit" class="btn-red">Yes, delete my account</button>
   </form>
-  <a href="{% url 'home' %}">Cancel</a>
+  <a href="{% url 'home' %}" class="btn-cancel">Cancel</a>
+  </div>
 {% endblock %}

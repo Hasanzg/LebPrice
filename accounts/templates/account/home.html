@@ -1,7 +1,288 @@
+{% extends "header-footer.html" %}
 {% load socialaccount %}
-{% block title %}Profile{% endblock %}
+{% load i18n %}
+{% block title %}- Home{% endblock %}
 {% block content %}
-  <h2>Welcome, {{ user.username }}</h2>
-    <a href="{% url 'account_logout' %}">Logout</a></p>
-    <a href="{% url 'account_delete' %}">Delete My Account</a>
+  {% if messages %}
+    <div class="messages-container">
+      <ul>
+        {% for message in messages %}
+          {% if forloop.last %}
+              <li>                    
+                {{ message }}  <button onclick="location.reload()">OK</button>
+              </li>
+          {% else %}
+              <li>{{ message }}</li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+  <main>
+    <section class="products">
+      <div class="product-card">
+        <img src="https://kaas.hpcloud.hp.com/PROD/v2/renderbinary/6338340/6344509/con-win-nb-p-felicette-22c1-hp-pavilion-laptop-15-eh2000-specification/con-nb-felicitte-hp-pavilion-laptop-15-eh2000-product-image" alt="Laptop">
+        <h3>HP Pavilion 15</h3>
+        <p class="store">By: Abed Tahan</p>
+        <p class="price">$799</p>
+        <button>Add to Cart</button>
+      </div>
+
+      <div class="product-card">
+        <img src="https://static.wixstatic.com/media/e6ead5_570d110cb8c34deeb2ba646670966b9f~mv2_d_1654_2481_s_2.png/v1/fill/w_480,h_720,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/e6ead5_570d110cb8c34deeb2ba646670966b9f~mv2_d_1654_2481_s_2.png" alt="Olive Oil">
+        <h3>Extra Virgin Olive Oil 1L</h3>
+        <p class="store">By: Spinneys</p>
+        <p class="price">$10</p>
+        <button>Add to Cart</button>
+      </div>
+
+      <div class="product-card">
+        <img src="https://sony.scene7.com/is/image/sonyglobalsolutions/360-RA-category-icon-20221202?$S7Product$&fmt=png-alpha" alt="Headphones">
+        <h3>Sony WH-1000XM5</h3>
+        <p class="store">By: Khoury Home</p>
+        <p class="price">$299</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="https://cdn.shopify.com/s/files/1/0606/8482/8929/files/VV1-010923-TW-00119.png?v=1694530217" alt="Headphones">
+        <h3>Jacket</h3>
+        <p class="store">By: LC Waikiki</p>
+        <p class="price">$30</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="https://kaas.hpcloud.hp.com/PROD/v2/renderbinary/6338340/6344509/con-win-nb-p-felicette-22c1-hp-pavilion-laptop-15-eh2000-specification/con-nb-felicitte-hp-pavilion-laptop-15-eh2000-product-image" alt="Laptop">
+        <h3>HP Pavilion 15</h3>
+        <p class="store">By: Abed Tahan</p>
+        <p class="price">$799</p>
+        <button>Add to Cart</button>
+      </div>
+
+      <div class="product-card">
+        <img src="https://static.wixstatic.com/media/e6ead5_570d110cb8c34deeb2ba646670966b9f~mv2_d_1654_2481_s_2.png/v1/fill/w_480,h_720,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/e6ead5_570d110cb8c34deeb2ba646670966b9f~mv2_d_1654_2481_s_2.png" alt="Olive Oil">
+        <h3>Extra Virgin Olive Oil 1L</h3>
+        <p class="store">By: Spinneys</p>
+        <p class="price">$10</p>
+        <button>Add to Cart</button>
+      </div>
+
+      <div class="product-card">
+        <img src="https://sony.scene7.com/is/image/sonyglobalsolutions/360-RA-category-icon-20221202?$S7Product$&fmt=png-alpha" alt="Headphones">
+        <h3>Sony WH-1000XM5</h3>
+        <p class="store">By: Khoury Home</p>
+        <p class="price">$299</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="https://cdn.shopify.com/s/files/1/0606/8482/8929/files/VV1-010923-TW-00119.png?v=1694530217" alt="Headphones">
+        <h3>Jacket</h3>
+        <p class="store">By: LC Waikiki</p>
+        <p class="price">$30</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="https://kaas.hpcloud.hp.com/PROD/v2/renderbinary/6338340/6344509/con-win-nb-p-felicette-22c1-hp-pavilion-laptop-15-eh2000-specification/con-nb-felicitte-hp-pavilion-laptop-15-eh2000-product-image" alt="Laptop">
+        <h3>HP Pavilion 15</h3>
+        <p class="store">By: Abed Tahan</p>
+        <p class="price">$799</p>
+        <button>Add to Cart</button>
+      </div>
+
+      <div class="product-card">
+        <img src="https://static.wixstatic.com/media/e6ead5_570d110cb8c34deeb2ba646670966b9f~mv2_d_1654_2481_s_2.png/v1/fill/w_480,h_720,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/e6ead5_570d110cb8c34deeb2ba646670966b9f~mv2_d_1654_2481_s_2.png" alt="Olive Oil">
+        <h3>Extra Virgin Olive Oil 1L</h3>
+        <p class="store">By: Spinneys</p>
+        <p class="price">$10</p>
+        <button>Add to Cart</button>
+      </div>
+
+      <div class="product-card">
+        <img src="https://sony.scene7.com/is/image/sonyglobalsolutions/360-RA-category-icon-20221202?$S7Product$&fmt=png-alpha" alt="Headphones">
+        <h3>Sony WH-1000XM5</h3>
+        <p class="store">By: Khoury Home</p>
+        <p class="price">$299</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="https://cdn.shopify.com/s/files/1/0606/8482/8929/files/VV1-010923-TW-00119.png?v=1694530217" alt="Headphones">
+        <h3>Jacket</h3>
+        <p class="store">By: LC Waikiki</p>
+        <p class="price">$30</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="https://kaas.hpcloud.hp.com/PROD/v2/renderbinary/6338340/6344509/con-win-nb-p-felicette-22c1-hp-pavilion-laptop-15-eh2000-specification/con-nb-felicitte-hp-pavilion-laptop-15-eh2000-product-image" alt="Laptop">
+        <h3>HP Pavilion 15</h3>
+        <p class="store">By: Abed Tahan</p>
+        <p class="price">$799</p>
+        <button>Add to Cart</button>
+      </div>
+
+      <div class="product-card">
+        <img src="https://static.wixstatic.com/media/e6ead5_570d110cb8c34deeb2ba646670966b9f~mv2_d_1654_2481_s_2.png/v1/fill/w_480,h_720,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/e6ead5_570d110cb8c34deeb2ba646670966b9f~mv2_d_1654_2481_s_2.png" alt="Olive Oil">
+        <h3>Extra Virgin Olive Oil 1L</h3>
+        <p class="store">By: Spinneys</p>
+        <p class="price">$10</p>
+        <button>Add to Cart</button>
+      </div>
+
+      <div class="product-card">
+        <img src="https://sony.scene7.com/is/image/sonyglobalsolutions/360-RA-category-icon-20221202?$S7Product$&fmt=png-alpha" alt="Headphones">
+        <h3>Sony WH-1000XM5</h3>
+        <p class="store">By: Khoury Home</p>
+        <p class="price">$299</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="https://cdn.shopify.com/s/files/1/0606/8482/8929/files/VV1-010923-TW-00119.png?v=1694530217" alt="Headphones">
+        <h3>Jacket</h3>
+        <p class="store">By: LC Waikiki</p>
+        <p class="price">$30</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="https://kaas.hpcloud.hp.com/PROD/v2/renderbinary/6338340/6344509/con-win-nb-p-felicette-22c1-hp-pavilion-laptop-15-eh2000-specification/con-nb-felicitte-hp-pavilion-laptop-15-eh2000-product-image" alt="Laptop">
+        <h3>HP Pavilion 15</h3>
+        <p class="store">By: Abed Tahan</p>
+        <p class="price">$799</p>
+        <button>Add to Cart</button>
+      </div>
+
+      <div class="product-card">
+        <img src="https://static.wixstatic.com/media/e6ead5_570d110cb8c34deeb2ba646670966b9f~mv2_d_1654_2481_s_2.png/v1/fill/w_480,h_720,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/e6ead5_570d110cb8c34deeb2ba646670966b9f~mv2_d_1654_2481_s_2.png" alt="Olive Oil">
+        <h3>Extra Virgin Olive Oil 1L</h3>
+        <p class="store">By: Spinneys</p>
+        <p class="price">$10</p>
+        <button>Add to Cart</button>
+      </div>
+
+      <div class="product-card">
+        <img src="https://sony.scene7.com/is/image/sonyglobalsolutions/360-RA-category-icon-20221202?$S7Product$&fmt=png-alpha" alt="Headphones">
+        <h3>Sony WH-1000XM5</h3>
+        <p class="store">By: Khoury Home</p>
+        <p class="price">$299</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="https://cdn.shopify.com/s/files/1/0606/8482/8929/files/VV1-010923-TW-00119.png?v=1694530217" alt="Headphones">
+        <h3>Jacket</h3>
+        <p class="store">By: LC Waikiki</p>
+        <p class="price">$30</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="https://kaas.hpcloud.hp.com/PROD/v2/renderbinary/6338340/6344509/con-win-nb-p-felicette-22c1-hp-pavilion-laptop-15-eh2000-specification/con-nb-felicitte-hp-pavilion-laptop-15-eh2000-product-image" alt="Laptop">
+        <h3>HP Pavilion 15</h3>
+        <p class="store">By: Abed Tahan</p>
+        <p class="price">$799</p>
+        <button>Add to Cart</button>
+      </div>
+
+      <div class="product-card">
+        <img src="https://static.wixstatic.com/media/e6ead5_570d110cb8c34deeb2ba646670966b9f~mv2_d_1654_2481_s_2.png/v1/fill/w_480,h_720,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/e6ead5_570d110cb8c34deeb2ba646670966b9f~mv2_d_1654_2481_s_2.png" alt="Olive Oil">
+        <h3>Extra Virgin Olive Oil 1L</h3>
+        <p class="store">By: Spinneys</p>
+        <p class="price">$10</p>
+        <button>Add to Cart</button>
+      </div>
+
+      <div class="product-card">
+        <img src="https://sony.scene7.com/is/image/sonyglobalsolutions/360-RA-category-icon-20221202?$S7Product$&fmt=png-alpha" alt="Headphones">
+        <h3>Sony WH-1000XM5</h3>
+        <p class="store">By: Khoury Home</p>
+        <p class="price">$299</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="https://cdn.shopify.com/s/files/1/0606/8482/8929/files/VV1-010923-TW-00119.png?v=1694530217" alt="Headphones">
+        <h3>Jacket</h3>
+        <p class="store">By: LC Waikiki</p>
+        <p class="price">$30</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="https://kaas.hpcloud.hp.com/PROD/v2/renderbinary/6338340/6344509/con-win-nb-p-felicette-22c1-hp-pavilion-laptop-15-eh2000-specification/con-nb-felicitte-hp-pavilion-laptop-15-eh2000-product-image" alt="Laptop">
+        <h3>HP Pavilion 15</h3>
+        <p class="store">By: Abed Tahan</p>
+        <p class="price">$799</p>
+        <button>Add to Cart</button>
+      </div>
+
+      <div class="product-card">
+        <img src="https://static.wixstatic.com/media/e6ead5_570d110cb8c34deeb2ba646670966b9f~mv2_d_1654_2481_s_2.png/v1/fill/w_480,h_720,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/e6ead5_570d110cb8c34deeb2ba646670966b9f~mv2_d_1654_2481_s_2.png" alt="Olive Oil">
+        <h3>Extra Virgin Olive Oil 1L</h3>
+        <p class="store">By: Spinneys</p>
+        <p class="price">$10</p>
+        <button>Add to Cart</button>
+      </div>
+
+      <div class="product-card">
+        <img src="https://sony.scene7.com/is/image/sonyglobalsolutions/360-RA-category-icon-20221202?$S7Product$&fmt=png-alpha" alt="Headphones">
+        <h3>Sony WH-1000XM5</h3>
+        <p class="store">By: Khoury Home</p>
+        <p class="price">$299</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="https://cdn.shopify.com/s/files/1/0606/8482/8929/files/VV1-010923-TW-00119.png?v=1694530217" alt="Headphones">
+        <h3>Jacket</h3>
+        <p class="store">By: LC Waikiki</p>
+        <p class="price">$30</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="https://kaas.hpcloud.hp.com/PROD/v2/renderbinary/6338340/6344509/con-win-nb-p-felicette-22c1-hp-pavilion-laptop-15-eh2000-specification/con-nb-felicitte-hp-pavilion-laptop-15-eh2000-product-image" alt="Laptop">
+        <h3>HP Pavilion 15</h3>
+        <p class="store">By: Abed Tahan</p>
+        <p class="price">$799</p>
+        <button>Add to Cart</button>
+      </div>
+
+      <div class="product-card">
+        <img src="https://static.wixstatic.com/media/e6ead5_570d110cb8c34deeb2ba646670966b9f~mv2_d_1654_2481_s_2.png/v1/fill/w_480,h_720,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/e6ead5_570d110cb8c34deeb2ba646670966b9f~mv2_d_1654_2481_s_2.png" alt="Olive Oil">
+        <h3>Extra Virgin Olive Oil 1L</h3>
+        <p class="store">By: Spinneys</p>
+        <p class="price">$10</p>
+        <button>Add to Cart</button>
+      </div>
+
+      <div class="product-card">
+        <img src="https://sony.scene7.com/is/image/sonyglobalsolutions/360-RA-category-icon-20221202?$S7Product$&fmt=png-alpha" alt="Headphones">
+        <h3>Sony WH-1000XM5</h3>
+        <p class="store">By: Khoury Home</p>
+        <p class="price">$299</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="https://cdn.shopify.com/s/files/1/0606/8482/8929/files/VV1-010923-TW-00119.png?v=1694530217" alt="Headphones">
+        <h3>Jacket</h3>
+        <p class="store">By: LC Waikiki</p>
+        <p class="price">$30</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="https://kaas.hpcloud.hp.com/PROD/v2/renderbinary/6338340/6344509/con-win-nb-p-felicette-22c1-hp-pavilion-laptop-15-eh2000-specification/con-nb-felicitte-hp-pavilion-laptop-15-eh2000-product-image" alt="Laptop">
+        <h3>HP Pavilion 15</h3>
+        <p class="store">By: Abed Tahan</p>
+        <p class="price">$799</p>
+        <button>Add to Cart</button>
+      </div>
+
+      <div class="product-card">
+        <img src="https://static.wixstatic.com/media/e6ead5_570d110cb8c34deeb2ba646670966b9f~mv2_d_1654_2481_s_2.png/v1/fill/w_480,h_720,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/e6ead5_570d110cb8c34deeb2ba646670966b9f~mv2_d_1654_2481_s_2.png" alt="Olive Oil">
+        <h3>Extra Virgin Olive Oil 1L</h3>
+        <p class="store">By: Spinneys</p>
+        <p class="price">$10</p>
+        <button>Add to Cart</button>
+      </div>
+
+      <div class="product-card">
+        <img src="https://sony.scene7.com/is/image/sonyglobalsolutions/360-RA-category-icon-20221202?$S7Product$&fmt=png-alpha" alt="Headphones">
+        <h3>Sony WH-1000XM5</h3>
+        <p class="store">By: Khoury Home</p>
+        <p class="price">$299</p>
+        <button>Add to Cart</button>
+      </div>
+    </section>
+  </main>
 {% endblock %}

@@ -1,15 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
 {% load socialaccount %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Home</title>
-</head>
-<body>
-    <h1>Welcome! Bye lets go hi</h1>
+{% load i18n %}
+{% block title %}- Account {% endblock title%}
+{% block content_main %}
+<div class="login-wrapper">
+    <img src="{% static 'images/logo1.png' %}" alt="Google" class="first-page-img">
+    <p>LebPrice helps you compare prices and find the best deals across multiple Lebanese stores.Please sign in to search, sort, view product details and access all our features.</p>
 
-    <p><a href="{% url 'account_login' %}">Login</a> | <a href="{% url 'account_signup' %}">Signup</a></p>
-    <a href="{% provider_login_url "google" %}">use google</a>
+    <div class="btn-group">
+        <a href="{% url 'account_login' %}" class="btn-green">Sign In</a>
+        <a href="{% url 'account_signup' %}" class="btn-green">Sign Up</a>
+    </div>
+
+    <a class="btn-red" href="{% provider_login_url "google" %}">Sign In / Sign Up via Google</a>
+    {% if messages %}
+    <div class="messages-container">
+      <ul>
+        {% for message in messages %}
+                {% if forloop.last %}
+                    <li>
+                        {{ message }}
+                        <button onclick="location.reload()">OK</button>
+                    </li>
+                {% else %}
+                    <li>{{ message }}</li>
+                {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+</div>
 
 
-</body>
-</html>
+{% endblock %}
