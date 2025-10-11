@@ -48,34 +48,23 @@ INSTALLED_APPS = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    # Needed to login by username in Django admin, regardless of `allauth`
-    'django.contrib.auth.backends.ModelBackend',
-
-    # `allauth` specific authentication methods
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 SITE_ID = 1
 
-# Redirect URLs
+# allauth
 LOGIN_REDIRECT_URL = '/home/'
 LOGOUT_REDIRECT_URL = '/'
-
-# Email is required for signup
-
-
-
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.sendpulse.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'lebprice.project@gmail.com' 
-EMAIL_HOST_PASSWORD = 'pfvg pgtm skyy wtyt'          # <- your SMTP password
+EMAIL_HOST_PASSWORD = 'pfvg pgtm skyy wtyt'
 DEFAULT_FROM_EMAIL = 'lebprice.project@gmail.com' 
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
-ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
-ACCOUNT_LOGIN_METHODS = {'email', 'username'}
+ACCOUNT_SIGNUP_FIELDS = ['username*','email*', 'password1*', 'password2*']
+ACCOUNT_LOGIN_METHODS = {'username','email'}
 EMAIL_HOST = 'smtp.gmail.com'
 
 
@@ -89,7 +78,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
-    
 ]
 
 
