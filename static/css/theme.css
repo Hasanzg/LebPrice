@@ -38,7 +38,7 @@ p {
 
 p a {
   text-decoration: none;
-  color: var(--cedar-green);
+  color: #009f4d;
   transition: color 0.2s ease;
 }
 
@@ -99,30 +99,13 @@ header {
 }
 
 /* Logo */
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  height: 100%;
-}
 
-.logo img {
-  height: 300%;
+img.logo {
+  height: 100%;
   width: auto;
   object-fit: contain;
   border-radius: 12px;
 }
-
-.logo h1 {
-  font-size: 1.2rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.logo .leb { color: var(--flag-red); }
-.logo .price { color: var(--cedar-green); }
 
 /* Search */
 .search-bar {
@@ -325,7 +308,6 @@ footer p {
 
   .search-bar input { width: 92%; min-width: unset; }
   .products { flex-direction: column; padding: 12px; gap: 16px; }
-  .logo h1 { font-size: 1rem; }
   .header-actions { width: 100%; justify-content: space-between; }
   .categories { padding: 8px; gap: 8px; }
 }
