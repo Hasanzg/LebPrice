@@ -1,95 +1,83 @@
 {% extends "header-footer.html" %}
-{% load socialaccount %}
+{% load static %}
 {% load i18n %}
+
 {% block title %}- Home{% endblock %}
 {% block content %}
+
   {% if messages %}
     <div class="messages-container">
       <ul>
         {% for message in messages %}
           {% if forloop.last %}
-              <li>                    
-                {{ message }}  <button onclick="location.reload()">OK</button>
-              </li>
+            <li>
+              {{ message }}  
+              <button onclick="location.reload()">OK</button>
+            </li>
           {% else %}
-              <li>{{ message }}</li>
+            <li>{{ message }}</li>
           {% endif %}
         {% endfor %}
       </ul>
     </div>
   {% endif %}
+
   <main>
-    <!-- Pagination Controls - Top -->
-    {% if products.has_other_pages %}
-    <div style="display: flex; justify-content: center; align-items: center; gap: 10px; padding: 20px;">
-      {% if products.has_previous %}
-        <a href="?page=1" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; text-decoration: none; color: var(--text); border: 1px solid var(--glass-border);">« First</a>
-        <a href="?page={{ products.previous_page_number }}" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; text-decoration: none; color: var(--text); border: 1px solid var(--glass-border);">‹ Previous</a>
-      {% endif %}
-
-      <span style="padding: 10px 20px; background: var(--gradient-green); color: white; border-radius: 8px; font-weight: 600;">
-        Page {{ products.number }} of {{ products.paginator.num_pages }}
-      </span>
-
-      {% if products.has_next %}
-        <a href="?page={{ products.next_page_number }}" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; text-decoration: none; color: var(--text); border: 1px solid var(--glass-border);">Next ›</a>
-        <a href="?page={{ products.paginator.num_pages }}" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; text-decoration: none; color: var(--text); border: 1px solid var(--glass-border);">Last »</a>
-      {% endif %}
-    </div>
-    {% endif %}
-
+    <!-- Product Cards -->
     <section class="products">
       {% for product in products %}
-      <div class="product-card">
-        {% if product.image_url %}
-          <img src="{{ product.image_url }}" alt="{{ product.product_name }}" onerror="this.src='https://via.placeholder.com/220x160?text=No+Image'">
-        {% else %}
-          <img src="https://via.placeholder.com/220x160?text=No+Image" alt="{{ product.product_name }}">
-        {% endif %}
-        
-        <h3>{{ product.product_name|truncatechars:50 }}</h3>
-        <p class="store">By: {{ product.store_name }}</p>
-        
-        {% if product.price %}
-          <p class="price">${{ product.price }}</p>
-        {% else %}
-          <p class="price" style="color: var(--muted);">Price unavailable</p>
-        {% endif %}
-        
-        {% if product.stock_status == 'in_stock' %}
-          <button>Add to Cart</button>
-        {% else %}
-          <button style="background: var(--muted); cursor: not-allowed;" disabled>Out of Stock</button>
-        {% endif %}
-      </div>
+        <div class="product-card">
+          {% if product.image_url %}
+            <img src="{{ product.image_url }}" alt="{{ product.product_name }}" 
+                 onerror="this.src='https://via.placeholder.com/220x160?text=No+Image'">
+          {% else %}
+            <img src="https://via.placeholder.com/220x160?text=No+Image" alt="{{ product.product_name }}">
+          {% endif %}
+
+          <h3>{{ product.product_name|truncatechars:50 }}</h3>
+          <p class="store">By: {{ product.store_name }}</p>
+
+          {% if product.price %}
+            <p class="price">${{ product.price }}</p>
+          {% else %}
+            <p class="price" style="color:var(--muted);">Price unavailable</p>
+          {% endif %}
+
+          {% if product.stock_status == 'in_stock' %}
+            <button>Add to Cart</button>
+          {% else %}
+            <button style="background:var(--muted);cursor:not-allowed;" disabled>Out of Stock</button>
+          {% endif %}
+        </div>
       {% empty %}
-      <div style="text-align: center; width: 100%; padding: 40px;">
-        <h2>No products available</h2>
-        <p>Please import products using the management command:</p>
-        <code style="background: #f0f0f0; padding: 10px; border-radius: 5px; display: inline-block; margin-top: 10px;">
-          python manage.py import_products path/to/your/file.csv
-        </code>
-      </div>
+        <div style="text-align:center;width:100%;padding:40px;">
+          <h2>No products available</h2>
+          <p>Please import products using the management command:</p>
+          <code style="background:#f0f0f0;padding:10px;border-radius:5px;display:inline-block;margin-top:10px;">
+            python manage.py import_products path/to/your/file.csv
+          </code>
+        </div>
       {% endfor %}
     </section>
 
-    <!-- Pagination Controls -->
+    <!-- Pagination Controls (Bottom) -->
     {% if products.has_other_pages %}
-    <div style="display: flex; justify-content: center; align-items: center; gap: 10px; padding: 40px 20px;">
+    <div style="display:flex;justify-content:center;align-items:center;gap:10px;padding:40px 20px;">
       {% if products.has_previous %}
-        <a href="?page=1" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; text-decoration: none; color: var(--text); border: 1px solid var(--glass-border);">« First</a>
-        <a href="?page={{ products.previous_page_number }}" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; text-decoration: none; color: var(--text); border: 1px solid var(--glass-border);">‹ Previous</a>
+        <a href="?{{ querystring }}&page=1">« First</a>
+        <a href="?{{ querystring }}&page={{ products.previous_page_number }}">‹ Previous</a>
       {% endif %}
 
-      <span style="padding: 10px 20px; background: var(--gradient-green); color: white; border-radius: 8px; font-weight: 600;">
+      <span style="padding:10px 20px;background:var(--gradient-green);color:white;border-radius:8px;">
         Page {{ products.number }} of {{ products.paginator.num_pages }}
       </span>
 
       {% if products.has_next %}
-        <a href="?page={{ products.next_page_number }}" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; text-decoration: none; color: var(--text); border: 1px solid var(--glass-border);">Next ›</a>
-        <a href="?page={{ products.paginator.num_pages }}" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; text-decoration: none; color: var(--text); border: 1px solid var(--glass-border);">Last »</a>
+        <a href="?{{ querystring }}&page={{ products.next_page_number }}">Next ›</a>
+        <a href="?{{ querystring }}&page={{ products.paginator.num_pages }}">Last »</a>
       {% endif %}
     </div>
     {% endif %}
   </main>
+
 {% endblock %}

@@ -6,6 +6,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q, F, Value, DecimalField
 from django.db.models.functions import Lower, Coalesce
 from django.shortcuts import render, redirect
+from django.urls import reverse
 
 from allauth.socialaccount.models import SocialAccount
 
@@ -35,7 +36,7 @@ def delete_account(request):
 @login_required
 def home(request):
     """Home page with search, price filter, robust sorting, and pagination."""
-    # Support both 'search' and 'q' parameters
+    # Support both 'search' and 'q' parameters (your form uses name="q")
     q = request.GET.get('search') or request.GET.get('q') or ''
     
     # Support both 'ordering' and 'sort' parameters
@@ -82,7 +83,6 @@ def home(request):
             )
         except TypeError:
             # Fallback for databases without nulls_last (e.g., SQLite)
-            # Coalesce NULLs to a sentinel value so they sort last/first
             sentinel = Decimal('9999999999.99') if ordering_param == 'price' else Decimal('-1')
             qs = qs.annotate(
                 price_for_sort=Coalesce('price', Value(sentinel), output_field=DecimalField())
@@ -115,7 +115,7 @@ def home(request):
     # Preserve query parameters for pagination links
     qdict = request.GET.copy()
     qdict.pop('page', None)
-    base_qs = qdict.urlencode()
+    querystring = qdict.urlencode()  # <-- rename to match your template
 
     context = {
         'products': products,
@@ -124,9 +124,10 @@ def home(request):
         'ordering': ordering_param,
         'min_price': min_price or '',
         'max_price': max_price or '',
-        'base_qs': base_qs,
+        'querystring': querystring,  # <-- your template uses this
     }
     
+    # Your template path is 'account/home.html' (as per your render)
     return render(request, 'account/home.html', context)
 
 
@@ -136,8 +137,8 @@ def home(request):
 def root_view(request):
     """Redirect to home if authenticated, otherwise to login"""
     if request.user.is_authenticated:
-        return redirect('home/')
-    return redirect('login/')
+        return redirect('home')   # use named URL, not literal 'home/'
+    return redirect('mylogin')    # matches your Project/urls.py name
 
 
 # ----------------------------
@@ -199,12 +200,6 @@ def settings(request):
     # Check if user signed up with Google (for conditional UI)
     social_accounts = SocialAccount.objects.filter(user=user)
     is_google_user = social_accounts.filter(provider='google').exists()
-
-    # Debug logging (optional - can be removed in production)
-    print(f"User: {user.username}")
-    print(f"User Email: {user.email}")
-    print(f"Is Google User: {is_google_user}")
-    print(f"Social Accounts: {social_accounts}")
 
     # Ensure profile exists
     profile, created = Profile.objects.get_or_create(user=user)
