@@ -672,3 +672,38 @@ img.first-page-img {
   background: rgba(179, 14, 14, 0.08);
   color: #b30e0e;
 }
+/* keyboard-only numeric inputs (hide steppers) */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] { 
+  -moz-appearance: textfield; /* Firefox */
+}
+
+/* $ icon inside the input */
+.currency-input {
+  position: relative;
+  display: inline-block;
+}
+.currency-input > span {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-weight: 600;
+  opacity: 0.9;
+}
+.currency-input > input {
+  padding-left: 1.4rem; /* space for $ */
+  width: 110px;         /* tweak if you want */
+}
+
+/* keep the search row tidy */
+.search-bar { 
+  display: flex; 
+  gap: 8px; 
+  align-items: center; 
+}

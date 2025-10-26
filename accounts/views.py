@@ -3,7 +3,9 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from products.models import Product, Category
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.db.models import Q
+from decimal import Decimal
+from django.db.models import Q, F, Value, DecimalField
+from django.db.models.functions import Lower, Coalesce
 
 @login_required
 def delete_account(request):
@@ -16,9 +18,7 @@ def delete_account(request):
 
 @login_required
 def home(request):
-    """Home page view with product list, search, price filter, and sorting"""
-
-    # read query params
+    """Home page with search, price filter, robust sorting, and pagination."""
     q = request.GET.get('search') or request.GET.get('q') or ''
     ordering_param = request.GET.get('ordering') or request.GET.get('sort') or ''
     min_price = request.GET.get('min_price')
@@ -26,7 +26,7 @@ def home(request):
 
     qs = Product.objects.select_related('category').all()
 
-    # text search
+    # text search across common fields
     if q:
         qs = qs.filter(
             Q(product_name__icontains=q) |
@@ -37,25 +37,40 @@ def home(request):
             Q(category__name__icontains=q)
         )
 
-    # numeric filters
+    # numeric price filters
     if min_price:
         qs = qs.filter(price__gte=min_price)
     if max_price:
         qs = qs.filter(price__lte=max_price)
 
-    # sort map: UI → model field
-    ordering_map = {
-        'name': 'product_name',
-        '-name': '-product_name',
-        'price': 'price',
-        '-price': '-price',
-    }
-    order_by = ordering_map.get(ordering_param)
-    qs = qs.order_by(order_by) if order_by else qs.order_by('-last_scraped')
+    # sorting
+    if ordering_param in ('price', '-price'):
+        # Prefer NULLS LAST if supported (Django >=3.1 + Postgres)
+        try:
+            qs = qs.order_by(
+                F('price').asc(nulls_last=True) if ordering_param == 'price'
+                else F('price').desc(nulls_last=True)
+            )
+        except TypeError:
+            # Fallback (e.g., SQLite): coalesce NULLs to a sentinel so they go last/first
+            sentinel = Decimal('9999999999.99') if ordering_param == 'price' else Decimal('-1')
+            qs = qs.annotate(
+                price_for_sort=Coalesce('price', Value(sentinel), output_field=DecimalField())
+            ).order_by('price_for_sort' if ordering_param == 'price' else '-price_for_sort')
+
+    elif ordering_param in ('name', '-name'):
+        # Case-insensitive alphabetical order on product_name
+        qs = qs.order_by(
+            Lower('product_name').asc() if ordering_param == 'name'
+            else Lower('product_name').desc()
+        )
+    else:
+        # default newest first
+        qs = qs.order_by('-last_scraped')
 
     categories = Category.objects.all()
 
-    # paginate
+    # pagination
     paginator = Paginator(qs, 32)
     page = request.GET.get('page', 1)
     try:
@@ -65,6 +80,11 @@ def home(request):
     except EmptyPage:
         products = paginator.page(paginator.num_pages)
 
+    # keep filters/sort when moving between pages
+    qdict = request.GET.copy()
+    qdict.pop('page', None)
+    base_qs = qdict.urlencode()
+
     return render(request, 'account/home.html', {
         'products': products,
         'categories': categories,
@@ -72,6 +92,7 @@ def home(request):
         'ordering': ordering_param,
         'min_price': min_price or '',
         'max_price': max_price or '',
+        'base_qs': base_qs,
     })
 
 def root_view(request):
