@@ -9,10 +9,24 @@
   <header>
     <img class="logo" src="{% static 'images/logo1.png' %}" alt="LebPrice Logo">
 
-    <div class="search-bar">
-      <input type="text" placeholder="Search products..." />
-      <button><i class="fa sharp fa-magnifying-glass" style="color: #f5f0e8;"></i></button>
-    </div>
+    <form class="search-bar" method="get" action="{% url 'home' %}">
+      <input type="text" name="search" placeholder="Search products..." value="{{ search|default:'' }}" />
+        
+      <select name="ordering" aria-label="Sort">
+        <option value="">Sort</option>
+        <option value="name" {% if ordering == 'name' %}selected{% endif %}>Name ↑</option>
+        <option value="-name" {% if ordering == '-name' %}selected{% endif %}>Name ↓</option>
+        <option value="price" {% if ordering == 'price' %}selected{% endif %}>Price ↑</option>
+        <option value="-price" {% if ordering == '-price' %}selected{% endif %}>Price ↓</option>
+      </select>
+    
+      <input type="number" step="0.01" name="min_price" placeholder="Min" value="{{ min_price }}">
+      <input type="number" step="0.01" name="max_price" placeholder="Max" value="{{ max_price }}">
+    
+      <button type="submit">
+        <i class="fa sharp fa-magnifying-glass" style="color: #f5f0e8;"></i>
+      </button>
+    </form>
 
     <div class="header-actions">
       <a href="#" class="cart">🛒 Cart</a>  
