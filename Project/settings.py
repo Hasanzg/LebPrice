@@ -64,7 +64,13 @@ SITE_ID = 1
 # Allauth settings
 LOGIN_REDIRECT_URL = '/home/'
 LOGOUT_REDIRECT_URL = '/'
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+# Email verification for REGULAR signup only (not social accounts)
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"  # For normal username/email signup
+SOCIALACCOUNT_EMAIL_VERIFICATION = "none"  # No verification for social logins
+
+# Social account settings
+SOCIALACCOUNT_AUTO_SIGNUP = True  # Automatically create account from social login
+SOCIALACCOUNT_EMAIL_REQUIRED = True  # Don't require email from social providers
 ACCOUNT_SIGNUP_FIELDS = ['username*', 'email*', 'password1*', 'password2*']
 ACCOUNT_LOGIN_METHODS = {'username', 'email'}
 

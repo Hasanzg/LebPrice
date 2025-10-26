@@ -1,0 +1,76 @@
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4">👤 Your Profile</h2>
+
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row">
+      <!-- Profile picture -->
+      <div class="col-md-4 text-center">
+        <img id="profile-preview"
+             src="{% if profile.profile_picture %}{{ profile.profile_picture.url }}{% else %}{% static 'images/default.jpg' %}{% endif %}"
+             alt="Profile Picture"
+             class="rounded-circle mb-3"
+             width="150" height="150">
+        <br>
+        <!-- Manual file input, removes the "Currently:" text -->
+        <input type="file" name="profile_picture" id="id_profile_picture" class="form-control">
+      </div>
+
+      <!-- Profile info -->
+      <div class="col-md-8">
+        <div class="mb-3">
+          <label class="form-label">Username: </label>
+          <span>{{ request.user.username }}</span>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Joined: </label>
+          <span>{{ request.user.date_joined|date:'F j, Y' }}</span>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">First Name:</label>
+            {{ form.first_name }}
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Last Name:</label>
+            {{ form.last_name }}
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">❤️ Favorite Shops:</label>
+          {{ form.favorite_shops }}
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">❤️ Favorite Items:</label>
+          {{ form.favorite_items }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- JS for live preview of newly selected image -->
+<script>
+  const input = document.getElementById("id_profile_picture");
+  const preview = document.getElementById("profile-preview");
+
+  input.addEventListener("change", function() {
+    const file = this.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        preview.src = e.target.result;
+      }
+      reader.readAsDataURL(file);
+    }
+  });
+</script>
+{% endblock %}
