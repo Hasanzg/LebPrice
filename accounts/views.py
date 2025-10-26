@@ -20,6 +20,7 @@ from .forms import ProfileForm, UsernameUpdateForm, CurrencyUpdateForm
 # ----------------------------
 @login_required
 def delete_account(request):
+    """Delete user account after confirmation"""
     if request.method == 'POST':
         user = request.user
         user.delete()
@@ -34,11 +35,17 @@ def delete_account(request):
 @login_required
 def home(request):
     """Home page with search, price filter, robust sorting, and pagination."""
+    # Support both 'search' and 'q' parameters
     q = request.GET.get('search') or request.GET.get('q') or ''
+    
+    # Support both 'ordering' and 'sort' parameters
     ordering_param = request.GET.get('ordering') or request.GET.get('sort') or ''
+    
+    # Price filters
     min_price = request.GET.get('min_price')
     max_price = request.GET.get('max_price')
 
+    # Base queryset
     qs = Product.objects.select_related('category').all()
 
     # Text search across common fields
@@ -54,20 +61,28 @@ def home(request):
 
     # Numeric price filters
     if min_price:
-        qs = qs.filter(price__gte=min_price)
+        try:
+            qs = qs.filter(price__gte=Decimal(min_price))
+        except (ValueError, TypeError):
+            pass
+    
     if max_price:
-        qs = qs.filter(price__lte=max_price)
+        try:
+            qs = qs.filter(price__lte=Decimal(max_price))
+        except (ValueError, TypeError):
+            pass
 
-    # Sorting
+    # Sorting with robust NULL handling
     if ordering_param in ('price', '-price'):
-        # Prefer NULLS LAST if supported (Postgres)
+        # Prefer NULLS LAST if supported (PostgreSQL)
         try:
             qs = qs.order_by(
                 F('price').asc(nulls_last=True) if ordering_param == 'price'
                 else F('price').desc(nulls_last=True)
             )
         except TypeError:
-            # Fallback (e.g., SQLite): coalesce NULLs to a sentinel so they go last/first
+            # Fallback for databases without nulls_last (e.g., SQLite)
+            # Coalesce NULLs to a sentinel value so they sort last/first
             sentinel = Decimal('9999999999.99') if ordering_param == 'price' else Decimal('-1')
             qs = qs.annotate(
                 price_for_sort=Coalesce('price', Value(sentinel), output_field=DecimalField())
@@ -80,14 +95,16 @@ def home(request):
             else Lower('product_name').desc()
         )
     else:
-        # Default newest first
+        # Default: newest first (by last_scraped)
         qs = qs.order_by('-last_scraped')
 
+    # Get all categories for filtering UI
     categories = Category.objects.all()
 
-    # Pagination
+    # Pagination - 32 products per page
     paginator = Paginator(qs, 32)
     page = request.GET.get('page', 1)
+    
     try:
         products = paginator.page(page)
     except PageNotAnInteger:
@@ -95,12 +112,12 @@ def home(request):
     except EmptyPage:
         products = paginator.page(paginator.num_pages)
 
-    # Keep filters/sort when moving between pages
+    # Preserve query parameters for pagination links
     qdict = request.GET.copy()
     qdict.pop('page', None)
     base_qs = qdict.urlencode()
 
-    return render(request, 'account/home.html', {
+    context = {
         'products': products,
         'categories': categories,
         'search': q,
@@ -108,13 +125,16 @@ def home(request):
         'min_price': min_price or '',
         'max_price': max_price or '',
         'base_qs': base_qs,
-    })
+    }
+    
+    return render(request, 'account/home.html', context)
 
 
 # ----------------------------
 # Root redirect
 # ----------------------------
 def root_view(request):
+    """Redirect to home if authenticated, otherwise to login"""
     if request.user.is_authenticated:
         return redirect('home/')
     return redirect('login/')
@@ -125,6 +145,7 @@ def root_view(request):
 # ----------------------------
 @login_required
 def profile(request):
+    """User profile view with first/last name and profile updates"""
     profile, created = Profile.objects.get_or_create(user=request.user)
 
     if request.method == 'POST':
@@ -132,15 +153,16 @@ def profile(request):
         if form.is_valid():
             profile = form.save(commit=False)
 
-            # Update User model
+            # Update User model with first/last name
             request.user.first_name = form.cleaned_data.get('first_name', '')
             request.user.last_name = form.cleaned_data.get('last_name', '')
             request.user.save()
 
             profile.save()
+            messages.success(request, 'Profile updated successfully!')
             return redirect('profile')
     else:
-        # Populate initial values for first/last name
+        # Populate initial values for first/last name from User model
         form = ProfileForm(
             instance=profile,
             initial={
@@ -149,7 +171,11 @@ def profile(request):
             }
         )
 
-    context = {'form': form, 'profile': profile}
+    context = {
+        'form': form,
+        'profile': profile
+    }
+    
     return render(request, 'account/profile.html', context)
 
 
@@ -158,6 +184,7 @@ def profile(request):
 # ----------------------------
 @login_required
 def cart(request):
+    """Shopping cart view"""
     return render(request, 'account/cart.html')
 
 
@@ -166,11 +193,18 @@ def cart(request):
 # ----------------------------
 @login_required
 def settings(request):
+    """Settings page for username, currency, and account management"""
     user = request.user
 
-    # Check if user signed up with Google
+    # Check if user signed up with Google (for conditional UI)
     social_accounts = SocialAccount.objects.filter(user=user)
     is_google_user = social_accounts.filter(provider='google').exists()
+
+    # Debug logging (optional - can be removed in production)
+    print(f"User: {user.username}")
+    print(f"User Email: {user.email}")
+    print(f"Is Google User: {is_google_user}")
+    print(f"Social Accounts: {social_accounts}")
 
     # Ensure profile exists
     profile, created = Profile.objects.get_or_create(user=user)
@@ -196,14 +230,16 @@ def settings(request):
             else:
                 username_form = UsernameUpdateForm(instance=user, user=user)
 
-        # Handle account deletion
+        # Handle account deletion redirect
         elif 'delete_account' in request.POST:
             return redirect('delete_account')
 
         else:
+            # If no specific action, initialize both forms
             username_form = UsernameUpdateForm(instance=user, user=user)
             currency_form = CurrencyUpdateForm(instance=profile)
     else:
+        # GET request - initialize forms
         username_form = UsernameUpdateForm(instance=user, user=user)
         currency_form = CurrencyUpdateForm(instance=profile)
 
