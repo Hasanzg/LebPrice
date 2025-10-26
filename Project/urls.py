@@ -4,7 +4,7 @@ from django.views.generic import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic.base import RedirectView
-
+from accounts import views
 urlpatterns = [
     # Django Admin
     path('admin/', admin.site.urls),
@@ -20,7 +20,8 @@ urlpatterns = [
     
     # API endpoints under /api/
     path('api/', include('products.urls')),
-
+    # ... other patterns
+    path('account/delete/', views.delete_account, name='account_delete'),
     # Website Icon
     path('favicon.ico', RedirectView.as_view(url='/static/images/logo2.ico', permanent=True)),
 ]

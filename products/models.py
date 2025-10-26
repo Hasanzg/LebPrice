@@ -1,19 +1,19 @@
 from django.db import models
 from django.utils import timezone
 
+
 class Category(models.Model):
     name = models.CharField(max_length=200, unique=True)
     slug = models.SlugField(max_length=200, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True) 
-
+    updated_at = models.DateTimeField(auto_now=True)
+    
     class Meta:
         verbose_name_plural = "Categories"
         ordering = ['name']
-
+    
     def __str__(self):
         return self.name
-
 
 
 class Product(models.Model):
@@ -22,9 +22,22 @@ class Product(models.Model):
         ('out_of_stock', 'Out of Stock'),
     ]
     
+    STORE_TYPE_CHOICES = [
+        ('tech', 'Technology'),
+        ('fashion', 'Fashion'),
+        ('grocery', 'Grocery'),
+        ('general', 'General'),
+        ('electronics', 'Electronics'),
+        ('home', 'Home & Garden'),
+        ('sports', 'Sports'),
+        ('books', 'Books'),
+        ('other', 'Other'),
+    ]
+    
     # Unique identifiers
     product_id = models.CharField(max_length=100, db_index=True)  # Store's product ID
     store_name = models.CharField(max_length=200, db_index=True)  # Store identifier
+    store_type = models.CharField(max_length=50, choices=STORE_TYPE_CHOICES, default='general', db_index=True)  # Store category
     sku = models.CharField(max_length=100, blank=True, null=True)
     
     # Product information
@@ -32,8 +45,13 @@ class Product(models.Model):
     product_name = models.CharField(max_length=500)
     description = models.TextField(blank=True, null=True)
     
-    # Pricing
-    price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    # Pricing - UPDATED WITH TAX FIELDS
+    price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, 
+                               help_text='Original scraped price')
+    price_before_tax = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True,
+                                          help_text='Price before tax is applied')
+    final_price_after_tax = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True,
+                                                help_text='Final price including tax')
     currency = models.CharField(max_length=10, default='USD')
     
     # Availability

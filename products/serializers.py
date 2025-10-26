@@ -23,6 +23,7 @@ class ProductSerializer(serializers.ModelSerializer):
     category_name = serializers.CharField(source='category.name', read_only=True)
     category_slug = serializers.CharField(source='category.slug', read_only=True)
     price_history_count = serializers.SerializerMethodField()
+    store_type_display = serializers.CharField(source='get_store_type_display', read_only=True)
     
     class Meta:
         model = Product
@@ -30,6 +31,8 @@ class ProductSerializer(serializers.ModelSerializer):
             'id',
             'product_id',
             'store_name',
+            'store_type',
+            'store_type_display',
             'sku',
             'category',
             'category_name',
@@ -37,6 +40,8 @@ class ProductSerializer(serializers.ModelSerializer):
             'product_name',
             'description',
             'price',
+            'price_before_tax',
+            'final_price_after_tax',
             'currency',
             'stock_status',
             'product_url',

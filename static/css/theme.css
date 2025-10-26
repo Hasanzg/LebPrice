@@ -104,6 +104,7 @@ img.logo {
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 8px;
 }
 
 .search-bar input {
@@ -171,6 +172,12 @@ img.logo {
 }
 
 .header-actions > a:hover {
+  color: var(--cedar-green);
+  background: rgba(12, 59, 46, 0.03);
+  transform: translateY(-3px);
+}
+
+.header-actions a:hover:not(.the-dropdown a) {
   color: var(--cedar-green);
   background: rgba(12, 59, 46, 0.03);
   transform: translateY(-3px);
@@ -294,11 +301,15 @@ footer p {
   .products { flex-direction: column; padding: 12px; gap: 16px; }
   .header-actions { width: 100%; justify-content: space-between; }
   .categories { padding: 8px; gap: 8px; }
+  
+  .social-login ul {
+    flex-direction: column;
+    gap: 10px;
+  }
 }
 
 /* ===== Accessibility ===== */
 a, button { outline-color: rgba(12,59,46,0.18); }
-
 
 /* ====== Form Container ====== */
 .signin-container {
@@ -311,6 +322,16 @@ a, button { outline-color: rgba(12,59,46,0.18); }
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   padding: 2rem 2.5rem;
   text-align: center;
+}
+
+/* ===== H2 inside login wrapper ===== */
+.signin-container h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--cedar-green);
+  text-align: center;
+  margin: 20px 0 12px 0;
+  position: relative;
 }
 
 /* ====== Form Fields ====== */
@@ -341,110 +362,110 @@ a, button { outline-color: rgba(12,59,46,0.18); }
 
 /* ====== Checkbox and Remember Me ====== */
 .signin-container #id_remember {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem; /* space between checkbox and label */
-    appearance: none; /* remove default browser style */
-    width: 18px;
-    height: 18px;
-    border: 2px solid var(--cedar-green);
-    border-radius: 4px;
-    position: relative;
-    cursor: pointer;
-    margin: 0;
-    flex-shrink: 0;
-    transition: background var(--transition), border-color var(--transition);
-    vertical-align: middle; /* Align with the label */
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--cedar-green);
+  border-radius: 4px;
+  position: relative;
+  cursor: pointer;
+  margin: 0;
+  flex-shrink: 0;
+  transition: background var(--transition), border-color var(--transition);
+  vertical-align: middle;
 }
 
-/* Checked state with background */
 .signin-container #id_remember:checked {
-    background-color: var(--cedar-green);
-    border-color: var(--cedar-green);
+  background-color: var(--cedar-green);
+  border-color: var(--cedar-green);
 }
 
-/* Checkmark - centered */
 .signin-container #id_remember:checked::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 4px;
-    height: 10px;
-    border: solid #fff;
-    border-width: 0 2px 2px 0;
-    transform: translate(-50%, -60%) rotate(45deg);
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 10px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: translate(-50%, -60%) rotate(45deg);
 }
 
-/* Checkbox hover/focus effect */
 .signin-container #id_remember:hover {
-    border-color: #1a6a54; /* slightly darker green on hover */
+  border-color: #1a6a54;
 }
 
-/* Optional: Also change background on hover when checked */
 .signin-container #id_remember:checked:hover {
-    background-color: #1a6a54;
-    border-color: #1a6a54;
+  background-color: #1a6a54;
+  border-color: #1a6a54;
 }
 
 .signin-container #id_remember:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(12, 59, 46, 0.2);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(12, 59, 46, 0.2);
 }
 
 .signin-container label[for="id_remember"] {
-    /* Label styling */
-    cursor: pointer;
-    font-size: 0.95rem;
-    color: var(--text);
-    /* Container: align checkbox and label inline */
-    display: inline-flex;
-    vertical-align: middle; /* This is the key line */
-    margin: 0;
-    line-height: 1; /* Ensure consistent line height */
-
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: var(--text);
+  display: inline-flex;
+  vertical-align: middle;
+  margin: 0;
+  line-height: 1;
 }
 
-/* ====== Divider for Third-party Login ====== */
+/* ===== Allauth error messages (plain UL in the form) ===== */
+.signin-container form ul {
+  list-style: none;
+  padding: 10px 14px;
+  margin: 8px 0 0 0;
+  border-radius: var(--radius);
+  background-color: rgba(179, 14, 14, 0.1);
+  color: var(--flag-red);
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+.signin-container form ul li {
+  margin-bottom: 4px;
+}
+
+.signin-container form ul li::before {
+  content: "⚠️ ";
+  margin-right: 4px;
+}
+
 /* ===== Social Login Wrapper ===== */
 .social-login {
-    margin-top: 2rem;
-    text-align: center;
+  margin-top: 2rem;
+  text-align: center;
 }
 
-/* ===== Divider (h2 "Or use a third-party") ===== */
 .social-login h2 {
-    font-size: 1rem;           /* same scale as other text */
-    font-weight: 600;
-    color: var(--muted);
-    margin: 1.5rem 0;
-    position: relative;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--muted);
+  margin: 1.5rem 0;
+  position: relative;
 }
 
-
-/* ===== Social Buttons List ===== */
 .social-login ul {
-    list-style: none;
-    padding: 0;
-    margin: 1rem 0 0 0;
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-
-/* ===== Responsive ===== */
-@media (max-width: 720px) {
-    .social-login ul {
-        flex-direction: column;
-        gap: 10px;
-    }
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0 0;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 /* ====== Buttons ====== */
-/* ===== Green button style (Login / Signup / form style) ===== */
-.btn-green, .signin-container button  {
+.btn-green, .signin-container button {
   width: 100%;
   text-decoration: none;
   background: var(--gradient-green);
@@ -460,36 +481,34 @@ a, button { outline-color: rgba(12,59,46,0.18); }
   transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.3s ease;
 }
 
-.btn-green:hover,  .signin-container button:hover {
-  /* Slightly darker gradient on hover */
+.btn-green:hover, .signin-container button:hover {
   filter: brightness(1.1);
   transform: scale(1.02);
   box-shadow: var(--accent-shadow);
 }
 
-/* ===== Red button style (Google / social style) ===== */
 .btn-red, .social-login ul li a {
-    width: 100%;
-    display: flex;
-    text-decoration: none;
-    background: var(--gradient-red);
-    color: #fff;
-    border: none;
-    padding: 0.8rem;
-    margin-top: 0.5rem;
-    font-size: 1rem;
-    font-weight: 700;
-    border-radius: var(--radius);
-    cursor: pointer;
-    box-shadow: var(--accent-shadow);
-    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.3s ease;
-    justify-content: center;
+  width: 100%;
+  display: flex;
+  text-decoration: none;
+  background: var(--gradient-red);
+  color: #fff;
+  border: none;
+  padding: 0.8rem;
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: var(--radius);
+  cursor: pointer;
+  box-shadow: var(--accent-shadow);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.3s ease;
+  justify-content: center;
 }
 
 .btn-red:hover, .social-login ul li a:hover {
-    filter: brightness(1.1);
-    transform: scale(1.02);
-    background: linear-gradient(90deg, #b30e0e, #7d0a0a); /* darker red hover */
+  filter: brightness(1.1);
+  transform: scale(1.02);
+  background: linear-gradient(90deg, #b30e0e, #7d0a0a);
 }
 
 .btn-red[id="cancel"] {
@@ -497,126 +516,83 @@ a, button { outline-color: rgba(12,59,46,0.18); }
   justify-self: center;
 }
 
-/*for localhost:8000/*/
 /* ===== Button group width matches Google button ===== */
 .signin-container .btn-group {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;          /* same as container / Google button */
-    max-width: 100%;      
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 100%;
 }
 
-/* Make each green button half the width minus the gap */
 .signin-container .btn-group .btn-green {
-    flex: 1;              /* takes equal space */
-    margin: 0;            /* remove horizontal margin */
+  flex: 1;
+  margin: 0;
 }
 
-/* Add gap between green buttons */
 .signin-container .btn-group .btn-green + .btn-green {
-    margin-left: 12px;    /* spacing between the two green buttons */
+  margin-left: 12px;
 }
 
-/* Make Google button full width */
 .signin-container .btn-red {
-    margin-top: 12px;
+  margin-top: 12px;
 }
 
-/* ===== H2 inside login wrapper ===== */
-.signin-container h2 {
-    font-size: 1.25rem;          /* slightly smaller than main H1 */
-    font-weight: 600;
-    color: var(--cedar-green);   /* theme green */
-    text-align: center;
-    margin: 20px 0 12px 0;       /* spacing above and below */
-    position: relative;
-}
-
-/* ===== Allauth error messages (plain UL in the form) ===== */
-.signin-container form ul {
-    list-style: none;              /* remove bullets */
-    padding: 10px 14px;
-    margin: 8px 0 0 0;
-    border-radius: var(--radius);
-    background-color: rgba(179, 14, 14, 0.1); /* light red bg */
-    color: var(--flag-red);        /* theme red */
-    font-size: 0.9rem;
-    text-align: left;
-}
-
-/* Each error item */
-.signin-container form ul li {
-    margin-bottom: 4px;
-}
-
-/* Optional icons for errors */
-.signin-container form ul li::before {
-    content: "⚠️ ";
-    margin-right: 4px;
-}
-
+/* ===== Messages Container ===== */
 .messages-container {
-    width: 100%;
-    margin: 1rem 0;          /* spacing above and below */
-    background-color: #f8f9fa; /* light gray background */
-    border-left: 4px solid #4caf50; /* colored border for emphasis */
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-    font-family: sans-serif;
-    color: #333;
-    text-align: left;
+  width: 100%;
+  margin: 1rem 0;
+  background-color: #f8f9fa;
+  border-left: 4px solid #4caf50;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  font-family: sans-serif;
+  color: #333;
+  text-align: left;
 }
 
 .messages-container ul {
-    list-style:none;  /* nice bullet style */
-    margin: 0;
-    margin-top: 0.5rem;
-    padding-left: 1rem;
+  list-style: none;
+  margin: 0;
+  margin-top: 0.5rem;
+  padding-left: 1rem;
 }
 
 .messages-container li {
-    margin-bottom: 0.5rem;    /* spacing between messages */
+  margin-bottom: 0.5rem;
 }
 
 .messages-container li button {
-    margin-left: 1rem;
-    padding: 0.2rem 0.5rem;
-    font-size: 0.85rem;
-    cursor: pointer;
-    border: none;
-    background-color: #4caf50;
-    color: white;
-    border-radius: 4px;
+  margin-left: 1rem;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  border: none;
+  background-color: #4caf50;
+  color: white;
+  border-radius: 4px;
 }
 
 .messages-container li button:hover {
-    background-color: #45a049;
+  background-color: #45a049;
 }
 
-
+/* ===== First Page Image ===== */
 img.first-page-img {
-    width: 100%;   /* fill container width */
-    aspect-ratio: 3 / 1;  /* keep aspect ratio */
-    display: block;
-    margin: 0 auto; /* center */    
-    object-fit:contain;  /* ensures no cropping/scaling */
-    padding: 0;
+  width: 100%;
+  aspect-ratio: 3 / 1;
+  display: block;
+  margin: 0 auto;
+  object-fit: contain;
+  padding: 0;
 }
 
-/* Profile wrapper */
+/* ===== Profile Dropdown ===== */
 .dropdown-wrapper {
   position: relative;
   display: inline-flex;
   justify-content: center;
 }
 
-.header-actions a:hover:not(.the-dropdown a) {
-  color: var(--cedar-green);
-  background: rgba(12, 59, 46, 0.03);
-  transform: translateY(-3px);
-}
-
-/* Dropdown */
 .the-dropdown {
   display: none;
   position: absolute;
@@ -632,15 +608,13 @@ img.first-page-img {
   padding: 8px 0;
   overflow: hidden;
   width: max-content;
-  min-width: 140px; /* Same as profile button */
+  min-width: 140px;
 }
 
-/* Show dropdown on hover */
 .dropdown-wrapper:hover .the-dropdown {
   display: block;
 }
 
-/* Dropdown links */
 .the-dropdown a {
   display: block;
   padding: 10px 16px;
@@ -661,7 +635,6 @@ img.first-page-img {
   transform: translateY(-1.5px);
 }
 
-/* Logout styling */
 .the-dropdown a.bad {
   border-top: 1px solid var(--glass-border);
   color: #c0392b;
@@ -671,4 +644,38 @@ img.first-page-img {
 .the-dropdown a.bad:hover {
   background: rgba(179, 14, 14, 0.08);
   color: #b30e0e;
+}
+
+/* ===== Number Input Styling ===== */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  appearance: textfield;       /* Standard */
+  -moz-appearance: textfield;  /* Firefox fallback */
+  -webkit-appearance: none;    /* Chrome/Safari fallback */
+}
+
+/* ===== Currency Input ===== */
+.currency-input {
+  position: relative;
+  display: inline-block;
+}
+
+.currency-input > span {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.currency-input > input {
+  padding-left: 1.4rem;
+  width: 110px;
 }

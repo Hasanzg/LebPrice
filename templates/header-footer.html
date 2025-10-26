@@ -8,26 +8,58 @@
 {% block content_main %}
   <header>
     <img class="logo" src="{% static 'images/logo1.png' %}" alt="LebPrice Logo">
-
-    <div class="search-bar">
-      <input type="text" placeholder="Search products..." />
-      <button><i class="fa sharp fa-magnifying-glass" style="color: #f5f0e8;"></i></button>
-    </div>
-
+    <form class="search-bar" method="get" action="{% url 'home' %}">
+      <input type="text" name="search" placeholder="Search products..." value="{{ search|default:'' }}" />
+       
+      <select name="ordering" aria-label="Sort">
+        <option value="">Sort</option>
+        <option value="name" {% if ordering == 'name' %}selected{% endif %}>Name ↑</option>
+        <option value="-name" {% if ordering == '-name' %}selected{% endif %}>Name ↓</option>
+        <option value="price" {% if ordering == 'price' %}selected{% endif %}>Price ↑</option>
+        <option value="-price" {% if ordering == '-price' %}selected{% endif %}>Price ↓</option>
+      </select>
+   
+      <!-- Min price with $ prefix, keyboard-only (no spinner) -->
+      <div class="currency-input">
+        <span>$</span>
+        <input
+          type="number"
+          name="min_price"
+          inputmode="decimal"
+          step="0.01"
+          placeholder="Min"
+          value="{{ min_price }}">
+      </div>
+   
+      <!-- Max price with $ prefix, keyboard-only (no spinner) -->
+      <div class="currency-input">
+        <span>$</span>
+        <input
+          type="number"
+          name="max_price"
+          inputmode="decimal"
+          step="0.01"
+          placeholder="Max"
+          value="{{ max_price }}">
+      </div>
+   
+      <button type="submit">
+        <i class="fa sharp fa-magnifying-glass" style="color: #f5f0e8;"></i>
+      </button>
+    </form>
     <div class="header-actions">
       <a href="#" class="cart">🛒 Cart</a>  
-
       <div class="dropdown-wrapper">
         <a href="#" class="profile">👤 Profile ▾</a>
         <div class="the-dropdown">
           <a href="#">My Account</a>
           <a href="#">Settings</a>
           <a href="{% url 'account_logout' %}" class="bad">Sign Out</a>
+          <a href="{% url 'account_delete' %}" class="bad">Delete Account</a>
         </div>
-      </div> <!-- close profile-wrapper -->
-    </div> <!-- close header-actions -->
+      </div>
+    </div>
   </header>
-
   <nav class="categories">
     <a href="#">Home</a>
     <a href="#">Groceries</a>
@@ -36,9 +68,7 @@
     <a href="#">Stationery</a>
     <a href="#">Fashion</a>
   </nav>
-
   {% block content %}{% endblock %}
-
   <footer>
     <p>📍 Beirut, Lebanon | 📧 lebprice.project@gmail.com</p>
   </footer>
