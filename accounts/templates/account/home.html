@@ -23,6 +23,25 @@
   {% endif %}
 
   <main>
+    <!-- Pagination Controls - Top -->
+    {% if products.has_other_pages %}
+    <div style="display: flex; justify-content: center; align-items: center; gap: 10px; padding: 20px;">
+      {% if products.has_previous %}
+        <a href="?page=1" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; text-decoration: none; color: var(--text); border: 1px solid var(--glass-border);">« First</a>
+        <a href="?page={{ products.previous_page_number }}" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; text-decoration: none; color: var(--text); border: 1px solid var(--glass-border);">‹ Previous</a>
+      {% endif %}
+
+      <span style="padding: 10px 20px; background: var(--gradient-green); color: white; border-radius: 8px; font-weight: 600;">
+        Page {{ products.number }} of {{ products.paginator.num_pages }}
+      </span>
+
+      {% if products.has_next %}
+        <a href="?page={{ products.next_page_number }}" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; text-decoration: none; color: var(--text); border: 1px solid var(--glass-border);">Next ›</a>
+        <a href="?page={{ products.paginator.num_pages }}" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; text-decoration: none; color: var(--text); border: 1px solid var(--glass-border);">Last »</a>
+      {% endif %}
+    </div>
+    {% endif %}
+
     <!-- Product Cards -->
     <section class="products">
       {% for product in products %}
@@ -60,24 +79,25 @@
       {% endfor %}
     </section>
 
-    <!-- Pagination Controls (Bottom) -->
+     <!-- Pagination Controls -->
     {% if products.has_other_pages %}
-    <div style="display:flex;justify-content:center;align-items:center;gap:10px;padding:40px 20px;">
+    <div style="display: flex; justify-content: center; align-items: center; gap: 10px; padding: 40px 20px;">
       {% if products.has_previous %}
-        <a href="?{{ querystring }}&page=1">« First</a>
-        <a href="?{{ querystring }}&page={{ products.previous_page_number }}">‹ Previous</a>
+        <a href="?page=1" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; text-decoration: none; color: var(--text); border: 1px solid var(--glass-border);">« First</a>
+        <a href="?page={{ products.previous_page_number }}" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; text-decoration: none; color: var(--text); border: 1px solid var(--glass-border);">‹ Previous</a>
       {% endif %}
 
-      <span style="padding:10px 20px;background:var(--gradient-green);color:white;border-radius:8px;">
+      <span style="padding: 10px 20px; background: var(--gradient-green); color: white; border-radius: 8px; font-weight: 600;">
         Page {{ products.number }} of {{ products.paginator.num_pages }}
       </span>
 
       {% if products.has_next %}
-        <a href="?{{ querystring }}&page={{ products.next_page_number }}">Next ›</a>
-        <a href="?{{ querystring }}&page={{ products.paginator.num_pages }}">Last »</a>
+        <a href="?page={{ products.next_page_number }}" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; text-decoration: none; color: var(--text); border: 1px solid var(--glass-border);">Next ›</a>
+        <a href="?page={{ products.paginator.num_pages }}" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; text-decoration: none; color: var(--text); border: 1px solid var(--glass-border);">Last »</a>
       {% endif %}
     </div>
     {% endif %}
+    
   </main>
 
 {% endblock %}

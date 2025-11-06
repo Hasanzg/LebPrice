@@ -9,6 +9,6 @@
     {% csrf_token %}
     <button type="submit" class="btn-red">Yes, delete my account</button>
   </form>
-  <a href="{% url 'settings' %}" class="btn-cancel">Cancel</a>
+  <a href="{% url 'home' %}" class="btn-red" id="cancel">Cancel</a>
   </div>
 {% endblock %}

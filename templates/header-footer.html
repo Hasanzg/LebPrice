@@ -7,7 +7,7 @@
 {% endblock %}
 {% block content_main %}
   <header>
-    <img class="logo" src="{% static 'images/logo1.png' %}" alt="LebPrice Logo">
+    <a class="logo" href="{% url 'home' %}"><img class="logo" src="{% static 'images/logo1.png' %}" alt="LebPrice Logo"></a>
     <form class="search-bar" method="get" action="{% url 'home' %}">
       <input type="text" name="search" placeholder="Search products..." value="{{ search|default:'' }}" />
        
@@ -55,7 +55,6 @@
           <a href="{% url 'profile' %}">My Profile</a>
           <a href="{% url 'settings' %}">Settings</a>
           <a href="{% url 'account_logout' %}" class="bad">Sign Out</a>
-          <a href="{% url 'delete_account' %}" class="bad">Delete Account</a>
         </div>
       </div>
     </div>
@@ -70,6 +69,6 @@
   </nav>
   {% block content %}{% endblock %}
   <footer>
-    <p>📍 Beirut, Lebanon | 📧 lebprice.project@gmail.com</p>
+    <p>📍 Beirut, Lebanon | 📧 <a href="mailto:lebprice.project@gmail.com">lebprice.project@gmail.com</a></p>
   </footer>
 {% endblock %}

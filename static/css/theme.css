@@ -91,6 +91,12 @@ header {
 }
 
 /* Logo on header*/
+a.logo {
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+}
+
 img.logo {
   height: 100%;
   width: auto;
@@ -1038,4 +1044,17 @@ input[type="number"] {
 .save-button:hover {
   filter: brightness(1.1);
   transform: scale(1.02);
+}
+
+footer p a {
+  color: #fff;  /* White text to contrast with green background */
+  text-decoration: underline;  /* Makes it clear it's clickable */
+  text-decoration-color: rgba(255, 255, 255, 0.5);  /* Subtle underline */
+  transition: all var(--transition) ease;
+}
+
+footer p a:hover {
+  color: #ffd700;  /* Gold/yellow on hover - stands out nicely */
+  text-decoration-color: #ffd700;  /* Matching underline */
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);  /* Subtle glow effect */
 }
