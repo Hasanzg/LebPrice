@@ -19,3 +19,8 @@ tzdata==2025.2
 urllib3==2.5.0
 pillow==10.4.0
 django-cors-headers==4.4.0
+python-decouple==3.8
+celery==5.3.4
+redis==5.0.1
+psycopg2-binary==2.9.9
+django-redis==5.4.0

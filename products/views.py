@@ -4,7 +4,9 @@ from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Product, Category, PriceHistory
 from .serializers import ProductSerializer, ProductDetailSerializer, CategorySerializer, PriceHistorySerializer
-
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
+from django.db.models import Avg, Min, Max, Count, Q
 
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -19,7 +21,7 @@ class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
     ordering_fields = ['name', 'created_at']
     ordering = ['name']
 
-
+@method_decorator(cache_page(60 * 15), name='list')  # Cache list view for 15 minutes
 class ProductViewSet(viewsets.ReadOnlyModelViewSet):
     """
     API endpoint for products
@@ -188,4 +190,73 @@ class ProductViewSet(viewsets.ReadOnlyModelViewSet):
             return self.get_paginated_response(serializer.data)
         
         serializer = self.get_serializer(products, many=True)
+        return Response(serializer.data)
+    
+    @action(detail=False, methods=['get'])
+    def autocomplete(self, request):
+        """
+        Autocomplete suggestions for search
+        GET /api/products/autocomplete/?q=rtx
+        """
+        query = request.query_params.get('q', '')
+        if len(query) < 2:
+            return Response([])
+        
+        suggestions = Product.objects.filter(
+            product_name__icontains=query
+        ).values_list('product_name', flat=True).distinct()[:10]
+        
+        return Response(list(suggestions))
+    
+    @action(detail=False, methods=['get'])
+    def compare(self, request):
+        """
+        Compare products across stores
+        GET /api/products/compare/?ids=1,2,3
+        """
+        product_ids = request.query_params.get('ids', '').split(',')
+        if not product_ids:
+            return Response({'error': 'No product IDs provided'}, status=400)
+        
+        try:
+            product_ids = [int(pid) for pid in product_ids if pid.strip()]
+        except ValueError:
+            return Response({'error': 'Invalid product IDs'}, status=400)
+        
+        products = Product.objects.filter(id__in=product_ids)
+        
+        if not products.exists():
+            return Response({'error': 'No products found'}, status=404)
+        
+        comparison = {
+            'products': ProductSerializer(products, many=True).data,
+            'stats': {
+                'count': products.count(),
+                'lowest_price': products.aggregate(Min('final_price_after_tax'))['final_price_after_tax__min'],
+                'highest_price': products.aggregate(Max('final_price_after_tax'))['final_price_after_tax__max'],
+                'average_price': products.aggregate(Avg('final_price_after_tax'))['final_price_after_tax__avg'],
+            }
+        }
+        
+        return Response(comparison)
+    
+    @action(detail=False, methods=['get'])
+    def trending(self, request):
+        """
+        Get trending products (most price changes recently)
+        GET /api/products/trending/
+        """
+        from django.db.models import Count
+        
+        # Products with most price history entries in last 30 days
+        from django.utils import timezone
+        from datetime import timedelta
+        
+        thirty_days_ago = timezone.now() - timedelta(days=30)
+        
+        trending = Product.objects.annotate(
+           price_changes=Count('price_history', filter=Q(price_history__recorded_at__gte=thirty_days_ago))
+        ).filter(price_changes__gt=0).order_by('-price_changes')[:20]
+        
+        serializer = self.get_serializer(trending, many=True)
         return Response(serializer.data)

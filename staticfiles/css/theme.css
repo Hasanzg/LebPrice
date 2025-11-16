@@ -4,28 +4,28 @@
   --card-bg: rgba(255, 255, 255, 0.75);
   --glass-border: rgba(255, 255, 255, 0.6);
   --cedar-green: #0c3b2e;
+  --gradient-green: linear-gradient(90deg, var(--cedar-green), #1a6a54);
   --flag-red: #b30e0e;
+  --gradient-red: linear-gradient(90deg, var(--flag-red), #9a0b0b);
   --muted: #6b6b6b;
-  --accent-shadow: 0 8px 20px rgba(12, 59, 46, 0.08);
+  --accent-shadow: 0 8px 20px rgba(12, 59, 46, 0.1);
   --radius: 14px;
   --max-width: 1200px;
   --gap: 20px;
   --header-height: 72px;
   --transition: 200ms ease;
   --text: #222;
-  --mobile-break: 720px;
 }
 
 h1 {
   font-size: clamp(1.8rem, 2.5vw, 2.8rem);
   font-weight: 700;
-  text-align: left;
+  text-align: center;
   text-shadow: 0 2px 6px rgba(12, 59, 46, 0.1);
   letter-spacing: 0.5px;
+  color: var(--cedar-green);
+  margin-bottom: 0.5rem;
 }
-
-h1 .leb { color: var(--flag-red); }
-h1 .price { color: var(--cedar-green); }
 
 p {
   font-size: clamp(0.95rem, 1.2vw, 1.05rem);
@@ -33,13 +33,13 @@ p {
   line-height: 1.6;
   margin-bottom: 1rem;
   letter-spacing: 0.2px;
-  text-align: justify;
+  text-align: center;
 }
 
 p a {
   text-decoration: none;
-  color: var(--cedar-green);
-  transition: color 0.2s ease;
+  color: #009f4d;
+  transition: color var(--transition) ease;
 }
 
 p a:hover {
@@ -71,14 +71,6 @@ body {
   align-items: center;
 }
 
-/* ===== Container ===== */
-.container {
-  width: 100%;
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
 /* ===== Header ===== */
 header {
   width: 100%;
@@ -98,31 +90,19 @@ header {
   z-index: 100;
 }
 
-/* Logo */
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+/* Logo on header*/
+a.logo {
   height: 100%;
+  width: auto;
+  object-fit: contain;
 }
 
-.logo img {
-  height: 300%;
+img.logo {
+  height: 100%;
   width: auto;
   object-fit: contain;
   border-radius: 12px;
 }
-
-.logo h1 {
-  font-size: 1.2rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.logo .leb { color: var(--flag-red); }
-.logo .price { color: var(--cedar-green); }
 
 /* Search */
 .search-bar {
@@ -130,6 +110,7 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 8px;
 }
 
 .search-bar input {
@@ -146,28 +127,41 @@ header {
 }
 
 .search-bar input:focus {
-  box-shadow: 0 10px 30px rgba(12, 59, 46, 0.08);
+  box-shadow: var(--accent-shadow);
   transform: translateY(-2px);
 }
 
-.search-bar button {
-  margin-left: 10px;
+.search-bar button, .product-card button {
+  margin-top: auto;
   padding: 10px 14px;
-  border-radius: 999px;
+  border-radius: var(--radius);
   border: none;
-  font-weight: 600;
-  background: linear-gradient(180deg, var(--cedar-green), #1a6a54);
+  background: var(--gradient-green);
   color: #fff;
+  font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 6px 18px rgba(12, 59, 46, 0.12);
+  box-shadow: var(--accent-shadow);
   transition: transform var(--transition);
 }
 
-.search-bar button:active {
+.search-bar button {
+  border-radius: 999px;
+  margin-left: 10px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.search-bar button:active, .product-card button:active {
   transform: scale(0.98);
 }
 
-/* Header Actions */
+.search-bar button:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 25px rgba(12, 59, 46, 0.2);
+}
+
+/* Header Actions (Cart, Profile, etc...) */
 .header-actions {
   display: flex;
   align-items: center;
@@ -179,11 +173,17 @@ header {
   color: var(--muted);
   font-weight: 600;
   padding: 8px 12px;
-  border-radius: 10px;
+  border-radius: var(--radius);
   transition: background var(--transition), color var(--transition), transform var(--transition);
 }
 
-.header-actions a:hover {
+.header-actions > a:hover {
+  color: var(--cedar-green);
+  background: rgba(12, 59, 46, 0.03);
+  transform: translateY(-3px);
+}
+
+.header-actions a:hover:not(.the-dropdown a) {
   color: var(--cedar-green);
   background: rgba(12, 59, 46, 0.03);
   transform: translateY(-3px);
@@ -247,14 +247,14 @@ header {
 
 .product-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 18px 40px rgba(12,59,46,0.08);
+  box-shadow: var(--accent-shadow);
 }
 
 .product-card img {
   width: 100%;
   height: 160px;
   object-fit: contain;
-  border-radius: 10px;
+  border-radius: var(--radius);
 }
 
 .product-card h3 {
@@ -274,37 +274,17 @@ header {
   color: var(--flag-red);
 }
 
-.product-card button {
-  margin-top: auto;
-  padding: 10px 14px;
-  border-radius: 10px;
-  border: none;
-  background: linear-gradient(90deg,var(--cedar-green), #1a6a54);
-  color: #fff;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 8px 20px rgba(12,59,46,0.1);
-  transition: transform var(--transition);
-}
-
-.product-card button:active {
-  transform: scale(0.98);
-}
-
 /* ===== Footer ===== */
 footer {
   width: 100%;
   margin-top: 28px;
   padding: 18px;
-  border-radius: var(--radius);
-  background: linear-gradient(90deg, var(--cedar-green), #13483a);
-  box-shadow: 0 10px 30px rgba(12,59,46,0.12);
+  background: var(--gradient-green);
+  box-shadow: var(--accent-shadow);
 }
 
 footer p {
-  text-align: center;
   color: #fff;
-  font-size: 0.95rem;
   margin: 0;
 }
 
@@ -322,22 +302,38 @@ footer p {
     padding: 12px;
     gap: 10px;
   }
-
+  
   .search-bar input { width: 92%; min-width: unset; }
   .products { flex-direction: column; padding: 12px; gap: 16px; }
-  .logo h1 { font-size: 1rem; }
   .header-actions { width: 100%; justify-content: space-between; }
   .categories { padding: 8px; gap: 8px; }
+  
+  .social-login ul {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .profile-layout {
+    flex-direction: column;
+  }
+  
+  .profile-picture-section {
+    flex: 1;
+  }
+  
+  .name-row {
+    flex-direction: column;
+    gap: 0;
+  }
 }
 
 /* ===== Accessibility ===== */
 a, button { outline-color: rgba(12,59,46,0.18); }
 
-
 /* ====== Form Container ====== */
 .signin-container {
   max-width: 40%;
-  margin: auto auto;
+  margin: auto;
   background: var(--card-bg);
   backdrop-filter: blur(10px);
   border: 1px solid var(--glass-border);
@@ -347,19 +343,14 @@ a, button { outline-color: rgba(12,59,46,0.18); }
   text-align: center;
 }
 
-/* ====== Title ====== */
-.signin-container h1 {
-  font-size: 2rem;
-  font-weight: 700;
+/* ===== H2 inside login wrapper ===== */
+.signin-container h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
   color: var(--cedar-green);
-  margin-bottom: 0.5rem;
   text-align: center;
-}
-
-.signin-container p {
-  font-size: 0.95rem;
-  color: var(--text);
-  margin-bottom: 1.5rem;
+  margin: 20px 0 12px 0;
+  position: relative;
 }
 
 /* ====== Form Fields ====== */
@@ -371,17 +362,15 @@ a, button { outline-color: rgba(12,59,46,0.18); }
   margin-bottom: 0.1rem;
 }
 
-.signin-container input[type="text"],
-.signin-container input[type="email"],
-.signin-container input[type="password"] {
+.signin-container input {
   width: 100%;
   padding: 0.75rem;
   border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 10px;
+  border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.8);
   font-size: 1rem;
   color: var(--text);
-  transition: all 0.2s ease;
+  transition: all var(--transition) ease;
 }
 
 .signin-container input:focus {
@@ -391,382 +380,681 @@ a, button { outline-color: rgba(12,59,46,0.18); }
 }
 
 /* ====== Checkbox and Remember Me ====== */
-/* Container: align checkbox and label inline */
-.signin-container label[for="id_remember"],
 .signin-container #id_remember {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem; /* space between checkbox and label */
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--cedar-green);
+  border-radius: 4px;
+  position: relative;
+  cursor: pointer;
+  margin: 0;
+  flex-shrink: 0;
+  transition: background var(--transition), border-color var(--transition);
+  vertical-align: middle;
 }
 
-/* Checkbox itself */
-.signin-container #id_remember {
-    appearance: none; /* remove default browser style */
-    width: 18px;
-    height: 18px;
-    border: 2px solid var(--cedar-green);
-    border-radius: 4px;
-    position: relative;
-    cursor: pointer;
-    margin: 0;
-    flex-shrink: 0;
-    transition: background 0.2s, border-color 0.2s;
-}
-
-/* Checked state with background */
 .signin-container #id_remember:checked {
-    background-color: var(--cedar-green);
-    border-color: var(--cedar-green);
+  background-color: var(--cedar-green);
+  border-color: var(--cedar-green);
 }
 
-/* Checkmark - centered */
 .signin-container #id_remember:checked::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 4px;
-    height: 10px;
-    border: solid #fff;
-    border-width: 0 2px 2px 0;
-    transform: translate(-50%, -60%) rotate(45deg);
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 10px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: translate(-50%, -60%) rotate(45deg);
 }
 
-/* Checkbox hover/focus effect */
 .signin-container #id_remember:hover {
-    border-color: #1a6a54; /* slightly darker green on hover */
+  border-color: #1a6a54;
 }
 
-/* Optional: Also change background on hover when checked */
 .signin-container #id_remember:checked:hover {
-    background-color: #1a6a54;
-    border-color: #1a6a54;
+  background-color: #1a6a54;
+  border-color: #1a6a54;
 }
 
 .signin-container #id_remember:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(12, 59, 46, 0.2);
-}
-
-/* Label styling */
-.signin-container label[for="id_remember"] {
-    order: 2; /* after checkbox */
-    cursor: pointer;
-    font-size: 0.95rem;
-    color: var(--text);
-}
-
-/* Container: align checkbox and label inline */
-.signin-container label[for="id_remember"],
-.signin-container #id_remember {
-    display: inline-flex;
-    vertical-align: middle; /* This is the key line */
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(12, 59, 46, 0.2);
 }
 
 .signin-container label[for="id_remember"] {
-    cursor: pointer;
-    font-size: 0.95rem;
-    color: var(--text);
-    margin: 0;
-    line-height: 1; /* Ensure consistent line height */
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: var(--text);
+  display: inline-flex;
+  vertical-align: middle;
+  margin: 0;
+  line-height: 1;
 }
 
-.signin-container #id_remember {
-    /* ... rest of your checkbox styles ... */
-    vertical-align: middle; /* Align with the label */
+/* ===== Allauth error messages (plain UL in the form) ===== */
+.signin-container form ul {
+  list-style: none;
+  padding: 10px 14px;
+  margin: 8px 0 0 0;
+  border-radius: var(--radius);
+  background-color: rgba(179, 14, 14, 0.1);
+  color: var(--flag-red);
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+.signin-container form ul li {
+  margin-bottom: 4px;
+}
+
+.signin-container form ul li::before {
+  content: "⚠️ ";
+  margin-right: 4px;
+}
+
+/* ===== Social Login Wrapper ===== */
+.social-login {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.social-login h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--muted);
+  margin: 1.5rem 0;
+  position: relative;
+}
+
+.social-login ul {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0 0;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 /* ====== Buttons ====== */
-.signin-container button {
+.btn-green, .signin-container button {
   width: 100%;
-  background: linear-gradient(90deg, var(--cedar-green), #1a6a54);
+  text-decoration: none;
+  background: var(--gradient-green);
   color: #fff;
   border: none;
   padding: 0.8rem;
   margin-top: 0.5rem;
   font-size: 1rem;
-  font-weight: 600;
-  border-radius: 10px;
+  font-weight: 700;
+  border-radius: var(--radius);
   cursor: pointer;
-  box-shadow: 0 8px 20px rgba(12, 59, 46, 0.1); /* subtle shadow for depth */
+  box-shadow: var(--accent-shadow);
   transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.3s ease;
 }
 
-.signin-container button:hover {
-  /* Slightly darker gradient on hover */
+.btn-green:hover, .signin-container button:hover {
   filter: brightness(1.1);
   transform: scale(1.02);
-  box-shadow: 0 12px 28px rgba(12, 59, 46, 0.15);
+  box-shadow: var(--accent-shadow);
 }
 
-.signin-container [data-slot="actions"],
-.signin-container .actions {
+.btn-red, .social-login ul li a {
+  width: 100%;
   display: flex;
-  flex-direction: column; /* stack vertically (optional) */
-  gap: 12px; /* space between buttons */
+  text-decoration: none;
+  background: var(--gradient-red);
+  color: #fff;
+  border: none;
+  padding: 0.8rem;
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: var(--radius);
+  cursor: pointer;
+  box-shadow: var(--accent-shadow);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.3s ease;
+  justify-content: center;
 }
 
-
-
-/* ====== Divider for Third-party Login ====== */
-/* ===== Social Login Wrapper ===== */
-.signin-container .social-login {
-    margin-top: 2rem;
-    text-align: center;
+.btn-red:hover, .social-login ul li a:hover {
+  filter: brightness(1.1);
+  transform: scale(1.02);
+  background: linear-gradient(90deg, #b30e0e, #7d0a0a);
 }
 
-/* ===== Divider (h2 "Or use a third-party") ===== */
-.signin-container .social-login h2 {
-    font-size: 1rem;           /* same scale as other text */
-    font-weight: 600;
-    color: var(--muted);
-    margin: 1.5rem 0;
-    position: relative;
+.btn-red[id="cancel"] {
+  width: auto;
+  justify-self: center;
 }
 
-
-/* ===== Social Buttons List ===== */
-.signin-container .social-login ul {
-    list-style: none;
-    padding: 0;
-    margin: 1rem 0 0 0;
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-/* ===== Individual Button ===== */
-/* Social buttons styled like form button but red */
-.signin-container .social-login ul li a {
-    padding: 10px 14px;
-    border-radius: 10px;
-    font-weight: 700;
-    font-size: 0.95rem;
-    color: #fff;
-    background: linear-gradient(90deg, var(--flag-red), #9a0b0b); /* red gradient */
-    box-shadow: 0 8px 20px rgba(12, 59, 46, 0.1);
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-/* Hover effect */
-.signin-container .social-login ul li a:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 18px 40px rgba(12, 59, 46, 0.08);
-    background: linear-gradient(90deg, #b30e0e, #7d0a0a); /* slightly darker red on hover */
-}
-
-/* Active/click effect */
-.signin-container .social-login ul li a:active {
-    transform: scale(0.98);
-    box-shadow: 0 8px 20px rgba(12, 59, 46, 0.1);
-}
-
-
-/* ===== Responsive ===== */
-@media (max-width: 720px) {
-    .signin-container .social-login ul {
-        flex-direction: column;
-        gap: 10px;
-    }
-}
-
-/* ===== Green button style (Login / Signup / form style) ===== */
-.btn-green {
-    padding: 10px 14px;
-    border-radius: 10px;
-    font-weight: 700;
-    font-size: 0.95rem;
-    color: #fff;
-    background: linear-gradient(90deg, var(--cedar-green), #1a6a54);
-    box-shadow: 0 8px 20px rgba(12, 59, 46, 0.1);
-    text-decoration: none;
-    display: inline-block;
-    margin: 0 6px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.btn-green:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 18px 40px rgba(12, 59, 46, 0.08);
-    background: linear-gradient(90deg, #0b2f24, #145443); /* darker green hover */
-}
-
-.btn-green:active {
-    transform: scale(0.98);
-    box-shadow: 0 8px 20px rgba(12, 59, 46, 0.1);
-}
-
-/* ===== Red button style (Google / social style) ===== */
-.btn-red, .login-wrapper form button {
-    padding: 10px 14px;
-    border-radius: 10px;
-    font-weight: 700;
-    font-size: 0.95rem;
-    color: #fff;
-    background: linear-gradient(90deg, var(--flag-red), #9a0b0b);
-    box-shadow: 0 8px 20px rgba(12, 59, 46, 0.1);
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    margin-top: 1rem;
-}
-
-.btn-red:hover, .login-wrapper form button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 18px 40px rgba(12, 59, 46, 0.08);
-    background: linear-gradient(90deg, #b30e0e, #7d0a0a); /* darker red hover */
-}
-
-
-.btn-red:active, .login-wrapper form button:active {
-    transform: scale(0.98);
-    box-shadow: 0 8px 20px rgba(12, 59, 46, 0.1);
-}
-
-.btn-cancel {
-  padding: 10px 14px;
-    border-radius: 10px;
-    font-weight: 700;
-    font-size: 0.95rem;
-    color: #fff;
-    background: linear-gradient(90deg, var(--flag-red), #9a0b0b);
-    box-shadow: 0 8px 20px rgba(12, 59, 46, 0.1);
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    margin-top: 1rem;
-}
-
-.btn-cancel:hover{
-    transform: translateY(-2px);
-    box-shadow: 0 18px 40px rgba(12, 59, 46, 0.08);
-    background: linear-gradient(90deg, #0b2f24, #145443); /* darker green hover */
-}
-
-
-.btn-cancel:active {
-    transform: scale(0.98);
-    box-shadow: 0 8px 20px rgba(12, 59, 46, 0.1);
-}
-
-
-/*for localhost:8000/*/
-/* ===== Container ===== */
-.login-wrapper {
-    width: 40%;        /* controls width of the form */
-    margin: auto auto;       /* center on page vertically */
-    padding: 40px 30px;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 16px;
-    box-shadow: 0 12px 40px rgba(12, 59, 46, 0.08);
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;               /* spacing between elements */
-}
 /* ===== Button group width matches Google button ===== */
-.login-wrapper .btn-group {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;          /* same as container / Google button */
-    max-width: 100%;      
+.signin-container .btn-group {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 100%;
 }
 
-/* Make each green button half the width minus the gap */
-.login-wrapper .btn-group .btn-green {
-    flex: 1;              /* takes equal space */
-    margin: 0;            /* remove horizontal margin */
+.signin-container .btn-group .btn-green {
+  flex: 1;
+  margin: 0;
 }
 
-/* Add gap between green buttons */
-.login-wrapper .btn-group .btn-green + .btn-green {
-    margin-left: 12px;    /* spacing between the two green buttons */
+.signin-container .btn-group .btn-green + .btn-green {
+  margin-left: 12px;
 }
 
-/* Make Google button full width */
-.login-wrapper .btn-red {
-    width: 100%;
-    margin-top: 12px;
+.signin-container .btn-red {
+  margin-top: 12px;
 }
 
-/* ===== H2 inside login wrapper ===== */
-.login-wrapper h2 {
-    font-size: 1.25rem;          /* slightly smaller than main H1 */
-    font-weight: 600;
-    color: var(--cedar-green);   /* theme green */
-    text-align: center;
-    margin: 20px 0 12px 0;       /* spacing above and below */
-    position: relative;
+/* ===== Messages Container ===== */
+.messages-container {
+  width: 100%;
+  margin: 1rem 0;
+  background-color: #f8f9fa;
+  border-left: 4px solid #4caf50;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  font-family: sans-serif;
+  color: #333;
+  text-align: left;
 }
 
-.login-wrapper h1 {
-  text-align: center;
+.messages-container ul {
+  list-style: none;
+  margin: 0;
+  margin-top: 0.5rem;
+  padding-left: 1rem;
 }
 
-.login-wrapper p {
-  font-size: 0.95rem;
+.messages-container li {
+  margin-bottom: 0.5rem;
+}
+
+.messages-container li button {
+  margin-left: 1rem;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  border: none;
+  background-color: #4caf50;
+  color: white;
+  border-radius: 4px;
+}
+
+.messages-container li button:hover {
+  background-color: #45a049;
+}
+
+/* ===== First Page Image ===== */
+img.first-page-img {
+  width: 100%;
+  aspect-ratio: 3 / 1;
+  display: block;
+  margin: 0 auto;
+  object-fit: contain;
+  padding: 0;
+}
+
+/* ===== Profile Dropdown ===== */
+.dropdown-wrapper {
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+}
+
+.the-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  z-index: 1000;
+  padding: 8px 0;
+  overflow: hidden;
+  width: max-content;
+  min-width: 140px;
+}
+
+.dropdown-wrapper:hover .the-dropdown {
+  display: block;
+}
+
+.the-dropdown a {
+  display: block;
+  padding: 10px 16px;
+  text-decoration: none;
   color: var(--text);
-  margin-bottom: 1.5rem;
+  transition: background var(--transition) ease, color var(--transition) ease;
+  white-space: nowrap;
+  border: none;
+  margin: 0;
+  width: 100%;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.the-dropdown a:hover {
+  background: rgba(12, 59, 46, 0.08);
+  color: var(--cedar-green);
+  transform: translateY(-1.5px);
+}
+
+.the-dropdown a.bad {
+  border-top: 1px solid var(--glass-border);
+  color: #c0392b;
+  font-weight: 600;
+}
+
+.the-dropdown a.bad:hover {
+  background: rgba(179, 14, 14, 0.08);
+  color: #b30e0e;
+}
+
+/* ===== Number Input Styling ===== */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+  -webkit-appearance: none;
+}
+
+/* ===== Currency Input ===== */
+.currency-input {
+  position: relative;
+  display: inline-block;
+}
+
+.currency-input > span {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.currency-input > input {
+  padding-left: 1.4rem;
+  width: 110px;
+}
+
+/* ===== Settings Container ===== */
+.settings-container {
+  max-width: 800px;
+  margin: 80px auto 40px;
+  padding: 20px;
+}
+
+.settings-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.settings-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--accent-shadow);
+}
+
+.settings-card h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--cedar-green);
+  margin: 0 0 16px 0;
+  text-align: left;
+}
+
+.settings-card h2.text-danger {
+  color: var(--flag-red);
+}
+
+.settings-card p,
+.settings-card small {
+  text-align: left;
+  margin-bottom: 12px;
+}
+
+.settings-card .form-label {
+  display: block;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.settings-card input,
+.settings-card select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.8);
+  font-size: 1rem;
+  color: var(--text);
+  transition: all var(--transition) ease;
+}
+
+.settings-card input:focus,
+.settings-card select:focus {
+  border-color: var(--cedar-green);
+  box-shadow: 0 0 0 3px rgba(12, 59, 46, 0.15);
+  outline: none;
+}
+
+.settings-card input:disabled {
+  background: rgba(200, 200, 200, 0.2);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.settings-card button[type="submit"] {
+  background: var(--gradient-green);
+  color: #fff;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  margin: 12px auto 0;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: var(--radius);
+  cursor: pointer;
+  box-shadow: var(--accent-shadow);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.3s ease;
+  display: block;
+}
+
+.settings-card button[type="submit"]:hover {
+  filter: brightness(1.1);
+  transform: scale(1.02);
+}
+
+.settings-card .btn-delete[type="submit"] {
+  background: var(--gradient-red);
+}
+
+.settings-card .btn-delete:hover {
+  filter: brightness(1.1);
+  transform: scale(1.02);
+}
+
+.settings-card a.btn-primary {
+  display: block;
+  text-decoration: none;
+  background: var(--gradient-green);
+  color: #fff;
+  padding: 0.8rem 1.5rem;
+  margin: 12px auto 0;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: var(--radius);
+  box-shadow: var(--accent-shadow);
+  transition: transform 0.15s ease, filter 0.3s ease;
+  width: fit-content;
   text-align: center;
 }
 
-/* ===== Allauth error messages (plain UL in the form) ===== */
-.signin-container form ul {
-    list-style: none;              /* remove bullets */
-    padding: 10px 14px;
-    margin: 8px 0 0 0;
-    border-radius: 10px;
-    background-color: rgba(179, 14, 14, 0.1); /* light red bg */
-    color: var(--flag-red);        /* theme red */
-    font-size: 0.9rem;
-    text-align: left;
+.settings-card a.btn-primary:hover {
+  filter: brightness(1.1);
+  transform: scale(1.02);
 }
 
-/* Each error item */
-.signin-container form ul li {
-    margin-bottom: 4px;
+.google-badge {
+  display: inline-block;
+  align-items: center;
+  background: rgba(12, 59, 46, 0.08);
+  color: var(--flag-red);
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 16px;
 }
 
-/* Optional icons for errors */
-.signin-container form ul li::before {
-    content: "⚠️ ";
-    margin-right: 4px;
+.text-danger {
+  color: var(--flag-red);
 }
 
-.Leb {
-    color: var(--flag-red);      /* theme red */
+.text-muted {
+  color: var(--muted);
+  font-size: 0.9rem;
 }
 
-.Price {
-    color: var(--cedar-green);      /* theme red */
+/* ===== Alert Messages ===== */
+.alert {
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  border-radius: var(--radius);
+  border-left: 4px solid;
 }
 
-
-
-
-.signin-container img.first-page-img {
-    width: 100%;   /* fill container width */
-    aspect-ratio: 3 / 1;  /* keep aspect ratio */
-    display: block;
-    margin: 0 auto; /* center */    
-    object-fit:contain;  /* ensures no cropping/scaling */
-    padding: 0;
-}
+.alert-success {
+  background-color: rgba(76, 175, 80, 0.1);
+  border-color: #4caf50;
+  color: #2e7d32;
 }
 
+.alert-danger {
+  background-color: rgba(179, 14, 14, 0.1);
+  border-color: var(--flag-red);
+  color: var(--flag-red);
+}
 
-.center-p-indiv p {
+.alert-warning {
+  background-color: rgba(255, 193, 7, 0.1);
+  border-color: #ffc107;
+  color: #f57c00;
+}
+
+.alert-info {
+  background-color: rgba(33, 150, 243, 0.1);
+  border-color: #2196f3;
+  color: #1976d2;
+}
+
+/* ===== Back to Home Button ===== */
+.back-home {
+  display: block;
+  text-decoration: none;
+  background: var(--gradient-green);
+  color: #fff;
+  padding: 0.8rem 1.5rem;
+  margin: 0 auto 32px;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: var(--radius);
+  box-shadow: var(--accent-shadow);
+  transition: transform 0.15s ease, filter 0.3s ease;
+  width: fit-content;
   text-align: center;
+}
+
+.back-home:hover {
+  filter: brightness(1.1);
+  transform: scale(1.02);
+}
+
+/* ===== Profile Container ===== */
+.profile-container {
+  max-width: 900px;
+  margin: 80px auto 40px;
+  padding: 20px;
+}
+
+.profile-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  padding: 32px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.profile-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--accent-shadow);
+}
+
+.profile-layout {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.profile-picture-section {
+  flex: 0 0 200px;
+  text-align: center;
+}
+
+.profile-picture-section img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--cedar-green);
+  box-shadow: var(--accent-shadow);
+  margin-bottom: 16px;
+}
+
+.profile-picture-section input[type="file"] {
+  display: none;
+}
+
+.custom-file-upload {
+  display: inline-block;
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: none;
+  border-radius: var(--radius);
+  background: var(--gradient-green);
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: var(--accent-shadow);
+  transition: transform 0.15s ease, filter 0.3s ease;
+}
+
+.custom-file-upload:hover {
+  filter: brightness(1.1);
+  transform: scale(1.02);
+}
+
+.profile-info-section {
+  flex: 1;
+  min-width: 300px;
+}
+
+.info-row {
+  margin-bottom: 20px;
+}
+
+.info-row label {
+  display: block;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.info-row .read-only {
+  color: var(--muted);
+  font-size: 1rem;
+  padding: 0.75rem;
+  background: rgba(200, 200, 200, 0.1);
+  border-radius: var(--radius);
+  display: block;
+}
+
+.info-row input,
+.info-row textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.8);
+  font-size: 1rem;
+  color: var(--text);
+  font-family: inherit;
+  transition: all var(--transition) ease;
+}
+
+.info-row input:focus,
+.info-row textarea:focus {
+  border-color: var(--cedar-green);
+  box-shadow: 0 0 0 3px rgba(12, 59, 46, 0.15);
+  outline: none;
+}
+
+.info-row textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.name-row {
+  display: flex;
+  gap: 16px;
+}
+
+.name-row .info-row {
+  flex: 1;
+}
+
+.save-button {
+  background: var(--gradient-green);
+  color: #fff;
+  border: none;
+  padding: 0.8rem 2rem;
+  margin: 20px auto 0;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: var(--radius);
+  cursor: pointer;
+  box-shadow: var(--accent-shadow);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.3s ease;
+  display: block;
+}
+
+.save-button:hover {
+  filter: brightness(1.1);
+  transform: scale(1.02);
+}
+
+footer p a {
+  color: #fff;  /* White text to contrast with green background */
+  text-decoration: underline;  /* Makes it clear it's clickable */
+  text-decoration-color: rgba(255, 255, 255, 0.5);  /* Subtle underline */
+  transition: all var(--transition) ease;
+}
+
+footer p a:hover {
+  color: #ffd700;  /* Gold/yellow on hover - stands out nicely */
+  text-decoration-color: #ffd700;  /* Matching underline */
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);  /* Subtle glow effect */
 }

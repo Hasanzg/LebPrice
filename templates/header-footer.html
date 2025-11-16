@@ -5,21 +5,34 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 {% endblock %}
+
 {% block content_main %}
   <header>
     <a class="logo" href="{% url 'home' %}"><img class="logo" src="{% static 'images/logo1.png' %}" alt="LebPrice Logo"></a>
-    <form class="search-bar" method="get" action="{% url 'home' %}">
-      <input type="text" name="search" placeholder="Search products..." value="{{ search|default:'' }}" />
+    <form class="search-bar" method="get" action="{% url 'home' %}" id="searchForm">
+      <input type="text" name="q" placeholder="Search products..." value="{{ search|default:'' }}" />
+      
+      <!-- CATEGORY DROPDOWN - AUTO SUBMIT ON CHANGE -->
+      <select name="category" aria-label="Category" title="Filter by category" onchange="document.getElementById('searchForm').submit();">
+        <option value=""> All Categories</option>
+        {% for category in categories %}
+          <option value="{{ category.slug }}" 
+                  {% if selected_category and selected_category.slug == category.slug %}selected{% endif %}>
+            {{ category.name }}
+          </option>
+        {% endfor %}
+      </select>
        
-      <select name="ordering" aria-label="Sort">
-        <option value="">Sort</option>
-        <option value="name" {% if ordering == 'name' %}selected{% endif %}>Name ↑</option>
-        <option value="-name" {% if ordering == '-name' %}selected{% endif %}>Name ↓</option>
-        <option value="price" {% if ordering == 'price' %}selected{% endif %}>Price ↑</option>
-        <option value="-price" {% if ordering == '-price' %}selected{% endif %}>Price ↓</option>
+      <!-- SORT DROPDOWN - AUTO SUBMIT ON CHANGE -->
+      <select name="ordering" aria-label="Sort" title="Sort products" onchange="document.getElementById('searchForm').submit();">
+        <option value=""> Sort By</option>
+        <option value="name" {% if ordering == 'name' %}selected{% endif %}>Name ↑ (A-Z)</option>
+        <option value="-name" {% if ordering == '-name' %}selected{% endif %}>Name ↓ (Z-A)</option>
+        <option value="price" {% if ordering == 'price' %}selected{% endif %}>Price ↑ (Low-High)</option>
+        <option value="-price" {% if ordering == '-price' %}selected{% endif %}>Price ↓ (High-Low)</option>
       </select>
    
-      <!-- Min price with $ prefix, keyboard-only (no spinner) -->
+      <!-- Min price with $ prefix -->
       <div class="currency-input">
         <span>$</span>
         <input
@@ -31,7 +44,7 @@
           value="{{ min_price }}">
       </div>
    
-      <!-- Max price with $ prefix, keyboard-only (no spinner) -->
+      <!-- Max price with $ prefix -->
       <div class="currency-input">
         <span>$</span>
         <input
@@ -59,15 +72,9 @@
       </div>
     </div>
   </header>
-  <nav class="categories">
-    <a href="{% url 'home' %}">Home</a>
-    <a href="#">Groceries</a>
-    <a href="#">Electronics</a>
-    <a href="#">Sports</a>
-    <a href="#">Stationery</a>
-    <a href="#">Fashion</a>
-  </nav>
+  
   {% block content %}{% endblock %}
+  
   <footer>
     <p>📍 Beirut, Lebanon | 📧 <a href="mailto:lebprice.project@gmail.com">lebprice.project@gmail.com</a></p>
   </footer>

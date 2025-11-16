@@ -7,10 +7,11 @@ from django.db.models import Q, F, Value, DecimalField
 from django.db.models.functions import Lower, Coalesce
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.db.models import Prefetch
 
 from allauth.socialaccount.models import SocialAccount
 
-from products.models import Product, Category
+from products.models import Product, Category, PriceHistory
 
 from .models import Profile
 from .forms import ProfileForm, UsernameUpdateForm, CurrencyUpdateForm
@@ -45,9 +46,23 @@ def home(request):
     # Price filters
     min_price = request.GET.get('min_price')
     max_price = request.GET.get('max_price')
+    
+    # Category filter - MAKE SURE THIS IS HERE
+    category_slug = request.GET.get('category')
+    selected_category = None
 
     # Base queryset
-    qs = Product.objects.select_related('category').all()
+    qs = Product.objects.select_related('category').prefetch_related(
+        Prefetch('price_history', queryset=PriceHistory.objects.order_by('-recorded_at'))
+    ).all()
+
+    # Category filter - MAKE SURE THIS IS HERE
+    if category_slug:
+        qs = qs.filter(category__slug=category_slug)
+        try:
+            selected_category = Category.objects.get(slug=category_slug)
+        except Category.DoesNotExist:
+            pass
 
     # Text search across common fields
     if q:
@@ -73,27 +88,15 @@ def home(request):
         except (ValueError, TypeError):
             pass
 
-    # Sorting with robust NULL handling
-    if ordering_param in ('price', '-price'):
-        # Prefer NULLS LAST if supported (PostgreSQL)
-        try:
-            qs = qs.order_by(
-                F('price').asc(nulls_last=True) if ordering_param == 'price'
-                else F('price').desc(nulls_last=True)
-            )
-        except TypeError:
-            # Fallback for databases without nulls_last (e.g., SQLite)
-            sentinel = Decimal('9999999999.99') if ordering_param == 'price' else Decimal('-1')
-            qs = qs.annotate(
-                price_for_sort=Coalesce('price', Value(sentinel), output_field=DecimalField())
-            ).order_by('price_for_sort' if ordering_param == 'price' else '-price_for_sort')
-
-    elif ordering_param in ('name', '-name'):
-        # Case-insensitive alphabetical order on product_name
-        qs = qs.order_by(
-            Lower('product_name').asc() if ordering_param == 'name'
-            else Lower('product_name').desc()
-        )
+    # Sorting
+    if ordering_param == 'price':
+        qs = qs.order_by('price')
+    elif ordering_param == '-price':
+        qs = qs.order_by('-price')
+    elif ordering_param == 'name':
+        qs = qs.order_by(Lower('product_name'))
+    elif ordering_param == '-name':
+        qs = qs.order_by(Lower('product_name').desc())
     else:
         # Default: newest first (by last_scraped)
         qs = qs.order_by('-last_scraped')
@@ -115,19 +118,19 @@ def home(request):
     # Preserve query parameters for pagination links
     qdict = request.GET.copy()
     qdict.pop('page', None)
-    querystring = qdict.urlencode()  # <-- rename to match your template
+    querystring = qdict.urlencode()
 
     context = {
         'products': products,
         'categories': categories,
+        'selected_category': selected_category,  # MAKE SURE THIS IS HERE
         'search': q,
         'ordering': ordering_param,
         'min_price': min_price or '',
         'max_price': max_price or '',
-        'querystring': querystring,  # <-- your template uses this
+        'querystring': querystring,
     }
     
-    # Your template path is 'account/home.html' (as per your render)
     return render(request, 'account/home.html', context)
 
 

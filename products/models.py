@@ -79,6 +79,50 @@ class Product(models.Model):
     def __str__(self):
         return f"{self.product_name} ({self.store_name})"
 
+    def save(self, *args, **kwargs):
+        """Track price changes automatically"""
+        if self.pk:  # Existing product
+            try:
+                old_product = Product.objects.get(pk=self.pk)
+                # Check if price changed
+                if (old_product.final_price_after_tax and 
+                    self.final_price_after_tax and 
+                    old_product.final_price_after_tax != self.final_price_after_tax):
+                    PriceHistory.objects.create(
+                        product=self,
+                        price=old_product.final_price_after_tax,
+                        currency=old_product.currency,
+                        stock_status=old_product.stock_status
+                    )
+            except Product.DoesNotExist:
+                pass
+        super().save(*args, **kwargs)
+    
+    @property
+    def price_trend(self):
+        """Get price trend (increasing/decreasing/stable)"""
+        recent = self.price_history.order_by('-recorded_at')[:2]
+        if len(recent) < 2:
+            return 'stable'
+        return 'decreasing' if recent[0].price < recent[1].price else 'increasing'
+    
+    @property
+    def lowest_price_ever(self):
+        """Get the lowest price from history"""
+        from django.db.models import Min
+        lowest = self.price_history.aggregate(Min('price'))['price__min']
+        if lowest and self.final_price_after_tax:
+            return min(lowest, self.final_price_after_tax)
+        return self.final_price_after_tax or lowest
+    
+    @property
+    def highest_price_ever(self):
+        """Get the highest price from history"""
+        from django.db.models import Max
+        highest = self.price_history.aggregate(Max('price'))['price__max']
+        if highest and self.final_price_after_tax:
+            return max(highest, self.final_price_after_tax)
+        return self.final_price_after_tax or highest
 
 class PriceHistory(models.Model):
     STOCK_CHOICES = [

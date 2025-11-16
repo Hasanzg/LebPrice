@@ -4,6 +4,19 @@ Class-driven architecture supporting multiple stores.
 Can run independently: python crawler.py
 """
 
+import logging
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('scraper.log'),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger(__name__)
+
 import os
 import sys
 import django
@@ -62,9 +75,9 @@ class StoreScraper:
             self.config.discover_api_endpoint()
     
     def safe_print(self, message):
-        """Thread-safe printing."""
+        """Thread-safe logging."""
         with self.print_lock:
-            print(message)
+            logger.info(message)
     
     def clean_html(self, text):
         """Remove HTML tags and clean up text."""
@@ -430,49 +443,49 @@ class StoreScraper:
             df.to_csv(filename, index=False, encoding='utf-8')
             df.to_csv(latest_filename, index=False, encoding='utf-8')
             
-            print(f"CSV saved: {filename}")
+            logger.info(f"CSV saved: {filename}")
             
         except Exception as e:
-            print(f"Error saving CSV: {e}")
+            logger.info(f"Error saving CSV: {e}")
 
     
     def run(self):
         """Main execution method."""
         start_time = time.time()
         
-        print("="*60)
-        print(f"{self.config.store_name} Scraper - Django Compatible")
-        print("="*60)
-        print(f"Store: {self.config.store_name}")
-        print(f"Database: {'Django ✓' if USE_DJANGO else 'CSV only'}")
-        print(f"Categories: {len(self.config.categories)}")
-        print(f"Tax Settings: {'Included' if self.config.tax_included else 'Not Included'} ({self.config.tax_rate*100}%)")
-        print(f"Retry Settings: {getattr(self.config, 'max_retries', 3)} attempts, {getattr(self.config, 'timeout', 15)}s timeout")
-        print(f"Workers: 1 category at a time (SQLite safe)")
-        print("="*60)
-        print()
+        logger.info("="*60)
+        logger.info(f"{self.config.store_name} Scraper - Django Compatible")
+        logger.info("="*60)
+        logger.info(f"Store: {self.config.store_name}")
+        logger.info(f"Database: {'Django ✓' if USE_DJANGO else 'CSV only'}")
+        logger.info(f"Categories: {len(self.config.categories)}")
+        logger.info(f"Tax Settings: {'Included' if self.config.tax_included else 'Not Included'} ({self.config.tax_rate*100}%)")
+        logger.info(f"Retry Settings: {getattr(self.config, 'max_retries', 3)} attempts, {getattr(self.config, 'timeout', 15)}s timeout")
+        logger.info(f"Workers: 1 category at a time (SQLite safe)")
+        logger.info("="*60)
+        logger.info("")
         
         # Scrape all products
         all_products = self.scrape_all_categories(max_workers=1)
         
         elapsed = time.time() - start_time
         
-        print()
-        print("="*60)
-        print("Scraping Completed!")
-        print("="*60)
-        print(f"Products fetched: {self.stats['total_fetched']}")
-        print(f"Pages retried: {self.stats['pages_retried']}")
-        print(f"Pages failed: {self.stats['pages_failed']}")
+        logger.info("")
+        logger.info("="*60)
+        logger.info("Scraping Completed!")
+        logger.info("="*60)
+        logger.info(f"Products fetched: {self.stats['total_fetched']}")
+        logger.info(f"Pages retried: {self.stats['pages_retried']}")
+        logger.info(f"Pages failed: {self.stats['pages_failed']}")
         
         if USE_DJANGO:
-            print(f"Database - Created: {self.stats['db_created']}")
-            print(f"Database - Updated: {self.stats['db_updated']}")
-            print(f"Database - Errors: {self.stats['db_errors']}")
-            print(f"Total in DB: {self.stats['db_created'] + self.stats['db_updated']}")
+            logger.info(f"Database - Created: {self.stats['db_created']}")
+            logger.info(f"Database - Updated: {self.stats['db_updated']}")
+            logger.info(f"Database - Errors: {self.stats['db_errors']}")
+            logger.info(f"Total in DB: {self.stats['db_created'] + self.stats['db_updated']}")
         
-        print(f"Time elapsed: {elapsed:.2f} seconds")
-        print("="*60)
+        logger.info(f"Time elapsed: {elapsed:.2f} seconds")
+        logger.info("="*60)
         
         # Save CSV as backup
         if all_products:

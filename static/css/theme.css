@@ -161,6 +161,90 @@ img.logo {
   box-shadow: 0 10px 25px rgba(12, 59, 46, 0.2);
 }
 
+/* ===== Dropdown Styling (Categories & Sort) ===== */
+.search-bar select {
+  padding: 10px 35px 10px 12px !important;
+  border: 2px solid rgba(0, 0, 0, 0.08) !important;
+  border-radius: 999px !important;
+  background: white !important;
+  color: var(--text) !important;
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 12px center !important;
+  min-width: 140px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+}
+
+.search-bar select:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1) !important;
+}
+
+.search-bar select:focus {
+  outline: none !important;
+  border-color: var(--cedar-green) !important;
+  box-shadow: 0 0 0 3px rgba(12, 59, 46, 0.1) !important;
+}
+
+/* Category Dropdown - Blue Theme */
+.search-bar select[name="category"] {
+  background-color: #eff6ff !important;
+  border-color: #3b82f6 !important;
+  color: #1e40af !important;
+}
+
+.search-bar select[name="category"]:hover {
+  border-color: #2563eb !important;
+  box-shadow: 0 6px 18px rgba(59, 130, 246, 0.25) !important;
+}
+
+.search-bar select[name="category"]:focus {
+  border-color: #2563eb !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15) !important;
+}
+
+/* Sort Dropdown - Orange Theme */
+.search-bar select[name="ordering"] {
+  background-color: #fff7ed !important;
+  border-color: #f97316 !important;
+  color: #c2410c !important;
+}
+
+.search-bar select[name="ordering"]:hover {
+  border-color: #ea580c !important;
+  box-shadow: 0 6px 18px rgba(249, 115, 22, 0.25) !important;
+}
+
+.search-bar select[name="ordering"]:focus {
+  border-color: #ea580c !important;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15) !important;
+}
+
+/* Dropdown Options Styling */
+.search-bar select option {
+  padding: 12px !important;
+  background: white !important;
+  color: var(--text) !important;
+  font-weight: 500 !important;
+}
+
+/* Make dropdowns responsive */
+@media (max-width: 720px) {
+  .search-bar select {
+    min-width: 120px;
+    font-size: 13px;
+    padding: 8px 30px 8px 10px;
+  }
+}
+
 /* Header Actions (Cart, Profile, etc...) */
 .header-actions {
   display: flex;
@@ -1057,4 +1141,34 @@ footer p a:hover {
   color: #ffd700;  /* Gold/yellow on hover - stands out nicely */
   text-decoration-color: #ffd700;  /* Matching underline */
   text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);  /* Subtle glow effect */
+}
+/* ===== Search Bar Layout Enhancement ===== */
+.search-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: nowrap;
+}
+
+.search-bar > * {
+  flex-shrink: 0;
+}
+
+.search-bar input[type="text"] {
+  flex: 1 1 auto;
+  min-width: 200px;
+}
+
+/* Ensure dropdowns don't break layout */
+@media (max-width: 1100px) {
+  .search-bar {
+    flex-wrap: nowrap;
+    justify-content: center;
+  }
+  
+  .search-bar input[type="text"] {
+    width: 50%;
+    min-width: 0%;
+  }
 }
