@@ -60,18 +60,19 @@ def home(request):
             Q(category__name__icontains=q)
         )
 
-    # Numeric price filters
-    if min_price:
+    # Numeric price filters (ignore blanks or whitespace)
+    if min_price and min_price.strip():
         try:
             qs = qs.filter(price__gte=Decimal(min_price))
-        except (ValueError, TypeError):
+        except (ValueError, TypeError, ArithmeticError):
             pass
-    
-    if max_price:
+
+    if max_price and max_price.strip():
         try:
             qs = qs.filter(price__lte=Decimal(max_price))
-        except (ValueError, TypeError):
+        except (ValueError, TypeError, ArithmeticError):
             pass
+
 
     # Sorting with robust NULL handling
     if ordering_param in ('price', '-price'):
