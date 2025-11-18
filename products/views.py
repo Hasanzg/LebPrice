@@ -4,7 +4,24 @@ from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Product, Category, PriceHistory
 from .serializers import ProductSerializer, ProductDetailSerializer, CategorySerializer, PriceHistorySerializer
+from django.shortcuts import render, get_object_or_404
 
+
+def product_detail(request, pk):
+    """
+    Display detailed information about a single product
+    """
+    product = get_object_or_404(Product.objects.select_related('category'), pk=pk)
+    
+    # Get price history for this product (last 10 entries)
+    price_history = product.price_history.all()[:10]
+    
+    context = {
+        'product': product,
+        'price_history': price_history,
+    }
+    
+    return render(request, 'products/product_detail.html', context)
 
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
     """

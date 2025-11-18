@@ -1058,3 +1058,80 @@ footer p a:hover {
   text-decoration-color: #ffd700;  /* Matching underline */
   text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);  /* Subtle glow effect */
 }
+
+/* Make product cards more interactive */
+.product-card a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.product-card h3 {
+  transition: color var(--transition);
+}
+
+.product-card a:hover h3 {
+  color: var(--cedar-green);
+}
+
+/* ===== Product Card Enhancements ===== */
+
+/* Make entire card clickable with hover effect */
+.product-card {
+  position: relative;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--accent-shadow);
+}
+
+/* Ensure buttons don't inherit card cursor */
+.product-card button {
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+}
+
+/* Style for View Details button */
+.product-card button:nth-of-type(2) {
+  background: var(--card-bg);
+  color: var(--cedar-green);
+  border: 2px solid var(--cedar-green);
+  margin-top: 8px;
+  box-shadow: none;
+}
+
+.product-card button:nth-of-type(2):hover {
+  background: var(--cedar-green);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(12, 59, 46, 0.2);
+}
+
+/* Make sure disabled buttons stay disabled looking */
+.product-card button:disabled {
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.product-card button:disabled:hover {
+  transform: none !important;
+  filter: none !important;
+}
+
+/* Add subtle animation to card */
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.product-card {
+  animation: cardFadeIn 0.4s ease-out;
+}

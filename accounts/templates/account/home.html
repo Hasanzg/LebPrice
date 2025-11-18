@@ -45,7 +45,7 @@
     <!-- Product Cards -->
     <section class="products">
       {% for product in products %}
-        <div class="product-card">
+        <div class="product-card" onclick="window.location.href='{% url 'products:product_detail' product.pk %}'" style="cursor: pointer;">
           {% if product.image_url %}
             <img src="{{ product.image_url }}" alt="{{ product.product_name }}" 
                  onerror="this.src='https://via.placeholder.com/220x160?text=No+Image'">
@@ -63,9 +63,17 @@
           {% endif %}
 
           {% if product.stock_status == 'in_stock' %}
-            <button>Add to Cart</button>
+            <button onclick="event.stopPropagation(); addToCart({{ product.id }})">Add to Cart</button>
+            <button onclick="event.stopPropagation(); window.location.href='{% url 'products:product_detail' product.pk %}'" 
+                    style="background: var(--card-bg); color: var(--cedar-green); border: 2px solid var(--cedar-green); margin-top: 8px;">
+              View Details
+            </button>
           {% else %}
-            <button style="background:var(--muted);cursor:not-allowed;" disabled>Out of Stock</button>
+            <button style="background:var(--muted);cursor:not-allowed;" disabled onclick="event.stopPropagation()">Out of Stock</button>
+            <button onclick="event.stopPropagation(); window.location.href='{% url 'products:product_detail' product.pk %}'" 
+                    style="background: var(--card-bg); color: var(--cedar-green); border: 2px solid var(--cedar-green); margin-top: 8px;">
+              View Details
+            </button>
           {% endif %}
         </div>
       {% empty %}
@@ -79,7 +87,7 @@
       {% endfor %}
     </section>
 
-     <!-- Pagination Controls -->
+     <!-- Pagination Controls - Bottom -->
     {% if products.has_other_pages %}
     <div style="display: flex; justify-content: center; align-items: center; gap: 10px; padding: 40px 20px;">
       {% if products.has_previous %}
@@ -99,5 +107,13 @@
     {% endif %}
     
   </main>
+
+  <script>
+    function addToCart(productId) {
+      // Placeholder for add to cart functionality
+      alert('Product ' + productId + ' added to cart! (Feature coming soon)');
+      // TODO: Implement actual cart functionality
+    }
+  </script>
 
 {% endblock %}

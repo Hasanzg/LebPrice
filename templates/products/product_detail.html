@@ -1,0 +1,376 @@
+{% extends "header-footer.html" %}
+{% load static %}
+
+{% block title %}- {{ product.product_name }}{% endblock %}
+
+{% block content %}
+<style>
+  .product-detail-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+  }
+
+  .product-detail-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    padding: 40px;
+    box-shadow: var(--accent-shadow);
+  }
+
+  .product-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 30px;
+  }
+
+  .product-image-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .product-image-section img {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    object-fit: contain;
+    border-radius: var(--radius);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+  }
+
+  .product-info-section h1 {
+    font-size: 2rem;
+    color: var(--cedar-green);
+    margin-bottom: 15px;
+    text-align: left;
+  }
+
+  .product-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 25px;
+  }
+
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1rem;
+  }
+
+  .meta-label {
+    font-weight: 600;
+    color: var(--muted);
+    min-width: 100px;
+  }
+
+  .meta-value {
+    color: var(--text);
+  }
+
+  .product-price {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--flag-red);
+    margin: 20px 0;
+  }
+
+  .price-unavailable {
+    color: var(--muted);
+    font-size: 1.5rem;
+  }
+
+  .stock-badge {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .stock-in {
+    background: rgba(76, 175, 80, 0.15);
+    color: #2e7d32;
+  }
+
+  .stock-out {
+    background: rgba(179, 14, 14, 0.15);
+    color: var(--flag-red);
+  }
+
+  .product-description {
+    margin: 30px 0;
+    padding: 20px;
+    background: rgba(12, 59, 46, 0.03);
+    border-radius: var(--radius);
+    border-left: 4px solid var(--cedar-green);
+  }
+
+  .product-description h2 {
+    font-size: 1.3rem;
+    color: var(--cedar-green);
+    margin-bottom: 12px;
+  }
+
+  .product-description p {
+    color: var(--text);
+    line-height: 1.8;
+    text-align: left;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+  }
+
+  .btn-add-cart {
+    flex: 1;
+    padding: 16px 24px;
+    background: var(--gradient-green);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: var(--accent-shadow);
+    transition: all var(--transition);
+  }
+
+  .btn-add-cart:hover:not(:disabled) {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+  }
+
+  .btn-add-cart:disabled {
+    background: var(--muted);
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  .btn-view-store {
+    padding: 16px 24px;
+    background: var(--card-bg);
+    color: var(--cedar-green);
+    border: 2px solid var(--cedar-green);
+    border-radius: var(--radius);
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition);
+  }
+
+  .btn-view-store:hover {
+    background: var(--cedar-green);
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  .btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: var(--card-bg);
+    color: var(--text);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    text-decoration: none;
+    font-weight: 600;
+    margin-bottom: 20px;
+    transition: all var(--transition);
+  }
+
+  .btn-back:hover {
+    background: rgba(12, 59, 46, 0.05);
+    transform: translateX(-5px);
+  }
+
+  .price-history-section {
+    margin-top: 40px;
+    padding: 25px;
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    border: 1px solid var(--glass-border);
+  }
+
+  .price-history-section h2 {
+    font-size: 1.5rem;
+    color: var(--cedar-green);
+    margin-bottom: 20px;
+    text-align: left;
+  }
+
+  .history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    margin-bottom: 10px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    border-left: 3px solid var(--cedar-green);
+  }
+
+  .history-date {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .history-price {
+    font-weight: 700;
+    color: var(--flag-red);
+    font-size: 1.1rem;
+  }
+
+  @media (max-width: 768px) {
+    .product-layout {
+      grid-template-columns: 1fr;
+      gap: 25px;
+    }
+
+    .product-detail-card {
+      padding: 20px;
+    }
+
+    .product-info-section h1 {
+      font-size: 1.5rem;
+    }
+
+    .product-price {
+      font-size: 2rem;
+    }
+
+    .action-buttons {
+      flex-direction: column;
+    }
+  }
+</style>
+
+<div class="product-detail-container">
+  <a href="{% url 'home' %}" class="btn-back">
+    ← Back to Products
+  </a>
+
+  <div class="product-detail-card">
+    <div class="product-layout">
+      <!-- Image Section -->
+      <div class="product-image-section">
+        {% if product.image_url %}
+          <img src="{{ product.image_url }}" 
+               alt="{{ product.product_name }}"
+               onerror="this.src='https://via.placeholder.com/500x400?text=No+Image'">
+        {% else %}
+          <img src="https://via.placeholder.com/500x400?text=No+Image" 
+               alt="{{ product.product_name }}">
+        {% endif %}
+      </div>
+
+      <!-- Info Section -->
+      <div class="product-info-section">
+        <h1>{{ product.product_name }}</h1>
+
+        <div class="product-meta">
+          <div class="meta-item">
+            <span class="meta-label">Store:</span>
+            <span class="meta-value">{{ product.store_name }}</span>
+          </div>
+
+          {% if product.category %}
+          <div class="meta-item">
+            <span class="meta-label">Category:</span>
+            <span class="meta-value">{{ product.category.name }}</span>
+          </div>
+          {% endif %}
+
+          {% if product.sku %}
+          <div class="meta-item">
+            <span class="meta-label">SKU:</span>
+            <span class="meta-value">{{ product.sku }}</span>
+          </div>
+          {% endif %}
+
+          <div class="meta-item">
+            <span class="meta-label">Status:</span>
+            {% if product.stock_status == 'in_stock' %}
+              <span class="stock-badge stock-in">✓ In Stock</span>
+            {% else %}
+              <span class="stock-badge stock-out">✗ Out of Stock</span>
+            {% endif %}
+          </div>
+
+          <div class="meta-item">
+            <span class="meta-label">Last Updated:</span>
+            <span class="meta-value">{{ product.last_scraped|date:"F d, Y" }}</span>
+          </div>
+        </div>
+
+        {% if product.price %}
+          <div class="product-price">${{ product.price }} {{ product.currency }}</div>
+        {% else %}
+          <div class="product-price price-unavailable">Price unavailable</div>
+        {% endif %}
+
+        <div class="action-buttons">
+          {% if product.stock_status == 'in_stock' and product.price %}
+            <button class="btn-add-cart" onclick="addToCart({{ product.id }})">
+              🛒 Add to Cart
+            </button>
+          {% else %}
+            <button class="btn-add-cart" disabled>
+              Out of Stock
+            </button>
+          {% endif %}
+          
+          <a href="{{ product.product_url }}" 
+             target="_blank" 
+             class="btn-view-store">
+            View on Store →
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Description Section -->
+    {% if product.description %}
+    <div class="product-description">
+      <h2>Product Description</h2>
+      <p>{{ product.description }}</p>
+    </div>
+    {% endif %}
+
+    <!-- Price History Section -->
+    {% if price_history %}
+    <div class="price-history-section">
+      <h2>📊 Price History</h2>
+      {% for history in price_history %}
+        <div class="history-item">
+          <span class="history-date">{{ history.recorded_at|date:"F d, Y - h:i A" }}</span>
+          <span class="history-price">${{ history.price }} {{ history.currency }}</span>
+        </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  function addToCart(productId) {
+    // Placeholder for add to cart functionality
+    alert('Product added to cart! (Feature coming soon)');
+    // TODO: Implement actual cart functionality
+    // You can make an AJAX call here to add the product to the cart
+  }
+</script>
+
+{% endblock %}
