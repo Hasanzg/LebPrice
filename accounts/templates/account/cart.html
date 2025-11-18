@@ -1,0 +1,97 @@
+{% extends "header-footer.html" %}
+{% load static %}
+
+{% block title %}- Cart{% endblock %}
+
+{% block content %}
+<main class="cart-container">
+
+    <h1>Your Cart</h1>
+
+    {% if products %}
+    <div class="cart-list">
+
+        {% for item in products %}
+        <div class="cart-item" data-price="{{ item.price }}" data-id="{{ item.id }}">
+            
+            <img src="{{ item.image_url|default:'https://via.placeholder.com/120x120?text=No+Image' }}" 
+                 onerror="this.src='https://via.placeholder.com/120x120?text=No+Image'">
+
+            <div class="cart-info">
+                <h3>{{ item.product_name }}</h3>
+                <p class="store">{{ item.store_name }}</p>
+                <p class="price">${{ item.price }}</p>
+            </div>
+
+            <div class="cart-qty">
+                <button class="qty-btn minus">−</button>
+                <input type="number" min="1" value="{{ item.quantity|default:1 }}" class="qty-input">
+                <button class="qty-btn plus">+</button>
+            </div>
+
+            <p class="line-total">$0.00</p>
+
+            <a href="{% url 'remove_from_cart' item.id %}" class="remove-btn">Remove</a>
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <div class="cart-summary">
+        <p>Total: <span id="cart-grand-total">$0.00</span></p>
+        {% if products %}
+        <button class="btn-red" onclick="window.location.href='{% url 'clear_cart' %}'">
+            🗑️ Clear Cart
+        </button>
+        {% endif %}
+    </div>
+
+    {% else %}
+        <p style="text-align:center; margin-top:40px;">Your cart is empty.</p>
+    {% endif %}
+</main>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    function updateLineTotals() {
+        let grandTotal = 0;
+
+        document.querySelectorAll('.cart-item').forEach(item => {
+            const price = parseFloat(item.dataset.price);
+            const qty = parseInt(item.querySelector(".qty-input").value);
+            const lineTotal = price * qty;
+            
+            item.querySelector(".line-total").textContent = "$" + lineTotal.toFixed(2);
+            grandTotal += lineTotal;
+        });
+
+        document.getElementById("cart-grand-total").textContent = "$" + grandTotal.toFixed(2);
+    }
+
+    document.querySelectorAll(".plus").forEach(btn =>
+        btn.addEventListener("click", e => {
+            const input = e.target.parentNode.querySelector(".qty-input");
+            input.value = parseInt(input.value) + 1;
+            updateLineTotals();
+        })
+    );
+
+    document.querySelectorAll(".minus").forEach(btn =>
+        btn.addEventListener("click", e => {
+            const input = e.target.parentNode.querySelector(".qty-input");
+            if (parseInt(input.value) > 1) {
+                input.value = parseInt(input.value) - 1;
+                updateLineTotals();
+            }
+        })
+    );
+
+    document.querySelectorAll(".qty-input").forEach(input =>
+        input.addEventListener("input", updateLineTotals)
+    );
+
+    updateLineTotals();
+});
+</script>
+
+{% endblock %}

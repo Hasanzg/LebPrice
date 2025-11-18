@@ -61,13 +61,20 @@
           {% else %}
             <p class="price" style="color:var(--muted);">Price unavailable</p>
           {% endif %}
-
+          
+          <!-- ADD TO CART FORM (AJAX) -->
           {% if product.stock_status == 'in_stock' %}
-            <button onclick="event.stopPropagation(); addToCart({{ product.id }})">Add to Cart</button>
-            <button onclick="event.stopPropagation(); window.location.href='{% url 'products:product_detail' product.pk %}'" 
+          <form method="post"
+                action="{% url 'add_to_cart' product.id %}"
+                class="add-to-cart-form"
+                style="margin-top:10px;">
+            {% csrf_token %}
+            <button id="add-cart-{{ product.id }}" onclick="event.stopPropagation(); addToCart({{ product.id }})">🛒 Add to Cart</button>
+          </form>
+          <button onclick="event.stopPropagation(); window.location.href='{% url 'products:product_detail' product.pk %}'" 
                     style="background: var(--card-bg); color: var(--cedar-green); border: 2px solid var(--cedar-green); margin-top: 8px;">
               View Details
-            </button>
+          </button>
           {% else %}
             <button style="background:var(--muted);cursor:not-allowed;" disabled onclick="event.stopPropagation()">Out of Stock</button>
             <button onclick="event.stopPropagation(); window.location.href='{% url 'products:product_detail' product.pk %}'" 
@@ -104,13 +111,19 @@
     {% endif %}
     
   </main>
-
   <script>
-    function addToCart(productId) {
-      // Placeholder for add to cart functionality
-      alert('Product ' + productId + ' added to cart! (Feature coming soon)');
-      // TODO: Implement actual cart functionality
-    }
-  </script>
+function addToCart(productId) {
+    // TODO: Call your existing cart logic here (AJAX or form submit)
+    
+    // Change button text
+    const btn = document.getElementById('add-cart-' + productId);
+    btn.textContent = '✅ Added';
+    btn.disabled = true; // optional: prevent further clicks
+    
+    // Optional: change styling to indicate success
+    btn.style.backgroundColor = 'var(--cedar-green)';
+    btn.style.color = 'white';
+}
+</script>
 
 {% endblock %}

@@ -11,13 +11,15 @@
     <form class="search-bar" method="get" action="{% url 'home' %}">
       <input type="text" name="search" placeholder="Search products..." value="{{ search|default:'' }}" />
        
-      <select name="ordering" aria-label="Sort">
-        <option value="">Sort</option>
-        <option value="name" {% if ordering == 'name' %}selected{% endif %}>Name ↑</option>
-        <option value="-name" {% if ordering == '-name' %}selected{% endif %}>Name ↓</option>
-        <option value="price" {% if ordering == 'price' %}selected{% endif %}>Price ↑</option>
-        <option value="-price" {% if ordering == '-price' %}selected{% endif %}>Price ↓</option>
-      </select>
+      <div class="dropdown-wrapper sort-dropdown">
+        <select name="ordering" aria-label="Sort">
+          <option value="">Sort</option>
+          <option value="name" {% if ordering == 'name' %}selected{% endif %}>Name ↑</option>
+          <option value="-name" {% if ordering == '-name' %}selected{% endif %}>Name ↓</option>
+          <option value="price" {% if ordering == 'price' %}selected{% endif %}>Price ↑</option>
+          <option value="-price" {% if ordering == '-price' %}selected{% endif %}>Price ↓</option>
+        </select>
+      </div>
    
       <!-- Min price with $ prefix, keyboard-only (no spinner) -->
       <div class="currency-input">
@@ -59,7 +61,7 @@
       </div>
     </div>
   </header>
-  
+
   <nav class="categories">
     <a href="{% url 'home' %}">Home</a>
 

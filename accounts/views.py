@@ -1,19 +1,17 @@
 from decimal import Decimal
-
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q, F, Value, DecimalField
 from django.db.models.functions import Lower, Coalesce
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-
 from allauth.socialaccount.models import SocialAccount
-
 from products.models import Product, Category
-
 from .models import Profile
 from .forms import ProfileForm, UsernameUpdateForm, CurrencyUpdateForm
+from django.http import JsonResponse
+from products.models import Product
 
 
 # ----------------------------
@@ -60,19 +58,18 @@ def home(request):
             Q(category__name__icontains=q)
         )
 
-    # Numeric price filters (ignore blanks or whitespace)
-    if min_price and min_price.strip():
-        try:
-            qs = qs.filter(price__gte=Decimal(min_price))
-        except (ValueError, TypeError, ArithmeticError):
-            pass
+       # Numeric price filters (ignore blanks or whitespace)
+        if min_price and min_price.strip():
+            try:
+                qs = qs.filter(price__gte=Decimal(min_price))
+            except (ValueError, TypeError, ArithmeticError):
+                pass
 
-    if max_price and max_price.strip():
-        try:
-            qs = qs.filter(price__lte=Decimal(max_price))
-        except (ValueError, TypeError, ArithmeticError):
-            pass
-
+        if max_price and max_price.strip():
+            try:
+                qs = qs.filter(price__lte=Decimal(max_price))
+            except (ValueError, TypeError, ArithmeticError):
+                pass
 
     # Sorting with robust NULL handling
     if ordering_param in ('price', '-price'):
@@ -184,10 +181,7 @@ def profile(request):
 # ----------------------------
 # Cart
 # ----------------------------
-@login_required
-def cart(request):
-    """Shopping cart view"""
-    return render(request, 'account/cart.html')
+
 
 
 # ----------------------------
@@ -247,3 +241,46 @@ def settings(request):
     }
 
     return render(request, 'account/settings.html', context)
+
+
+
+
+
+
+@login_required
+def view_cart(request):
+    profile = request.user.profile
+    products = profile.cart.all()  # gets Product objects
+    return render(request, 'account/cart.html', {'products': products})
+
+@login_required
+def add_to_cart(request, product_id):
+    profile = request.user.profile
+    product = get_object_or_404(Product, id=product_id)
+    
+    if product in profile.cart.all():
+        messages.info(request, f"{product.product_name} is already in your cart.")
+    else:
+        profile.cart.add(product)
+        messages.success(request, f"{product.product_name} has been added to your cart.")
+    
+    return redirect(request.META.get('HTTP_REFERER', 'home'))
+
+@login_required
+def remove_from_cart(request, product_id):
+    profile = request.user.profile
+    product = get_object_or_404(Product, id=product_id)
+    
+    if product in profile.cart.all():
+        profile.cart.remove(product)
+        messages.success(request, f"{product.product_name} has been removed from your cart.")
+    else:
+        messages.info(request, f"{product.product_name} was not in your cart.")
+    
+    return redirect(request.META.get('HTTP_REFERER', 'view_cart'))
+
+@login_required
+def clear_cart(request):
+    profile = request.user.profile
+    profile.cart.clear()
+    return redirect(request.META.get('HTTP_REFERER', 'view_cart'))
