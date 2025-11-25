@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: backend:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8000
+          # If later you want persistent SQLite, point Django DB to /data/db.sqlite3
+          # and uncomment the volumeMount below.
+          # volumeMounts:
+          #   - name: sqlite-storage
+          #     mountPath: /data
+      # volumes:
+      #   - name: sqlite-storage
+      #     persistentVolumeClaim:
+      #       claimName: backend-sqlite-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  type: ClusterIP
+  selector:
+    app: backend
+  ports:
+    - port: 8000
+      targetPort: 8000
