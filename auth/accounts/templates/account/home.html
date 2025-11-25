@@ -1,0 +1,129 @@
+{% extends "header-footer.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}- Home{% endblock %}
+{% block content %}
+
+  {% if messages %}
+    <div class="messages-container">
+      <ul>
+        {% for message in messages %}
+          {% if forloop.last %}
+            <li>
+              {{ message }}  
+              <button onclick="location.reload()">OK</button>
+            </li>
+          {% else %}
+            <li>{{ message }}</li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+  <main>
+    <!-- Pagination Controls - Top -->
+    {% if products.has_other_pages %}
+    <div style="display: flex; justify-content: center; align-items: center; gap: 10px; padding: 20px;">
+      {% if products.has_previous %}
+        <a href="?page=1" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; text-decoration: none; color: var(--text); border: 1px solid var(--glass-border);">« First</a>
+        <a href="?page={{ products.previous_page_number }}" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; text-decoration: none; color: var(--text); border: 1px solid var(--glass-border);">‹ Previous</a>
+      {% endif %}
+
+      <span style="padding: 10px 20px; background: var(--gradient-green); color: white; border-radius: 8px; font-weight: 600;">
+        Page {{ products.number }} of {{ products.paginator.num_pages }}
+      </span>
+
+      {% if products.has_next %}
+        <a href="?page={{ products.next_page_number }}" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; text-decoration: none; color: var(--text); border: 1px solid var(--glass-border);">Next ›</a>
+        <a href="?page={{ products.paginator.num_pages }}" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; text-decoration: none; color: var(--text); border: 1px solid var(--glass-border);">Last »</a>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Product Cards -->
+    <section class="products">
+      {% for product in products %}
+        <div class="product-card" onclick="window.location.href='{% url 'products:product_detail' product.pk %}'" style="cursor: pointer;">
+          {% if product.image_url %}
+            <img src="{{ product.image_url }}" alt="{{ product.product_name }}" 
+                 onerror="this.src='https://via.placeholder.com/220x160?text=No+Image'">
+          {% else %}
+            <img src="https://via.placeholder.com/220x160?text=No+Image" alt="{{ product.product_name }}">
+          {% endif %}
+
+          <h3>{{ product.product_name|truncatechars:50 }}</h3>
+          <p class="store">By: {{ product.store_name }}</p>
+
+          {% if product.price %}
+            <p class="price">${{ product.price }}</p>
+          {% else %}
+            <p class="price" style="color:var(--muted);">Price unavailable</p>
+          {% endif %}
+          
+          <!-- ADD TO CART FORM (AJAX) -->
+          {% if product.stock_status == 'in_stock' %}
+          <form method="post"
+                action="{% url 'add_to_cart' product.id %}"
+                class="add-to-cart-form"
+                style="margin-top:10px;">
+            {% csrf_token %}
+            <button id="add-cart-{{ product.id }}" onclick="event.stopPropagation(); addToCart({{ product.id }})">🛒 Add to Cart</button>
+          </form>
+          <button onclick="event.stopPropagation(); window.location.href='{% url 'products:product_detail' product.pk %}'" 
+                    style="background: var(--card-bg); color: var(--cedar-green); border: 2px solid var(--cedar-green); margin-top: 8px;">
+              View Details
+          </button>
+          {% else %}
+            <button style="background:var(--muted);cursor:not-allowed;" disabled onclick="event.stopPropagation()">Out of Stock</button>
+            <button onclick="event.stopPropagation(); window.location.href='{% url 'products:product_detail' product.pk %}'" 
+                    style="background: var(--card-bg); color: var(--cedar-green); border: 2px solid var(--cedar-green); margin-top: 8px;">
+              View Details
+            </button>
+          {% endif %}
+        </div>
+      {% empty %}
+        <div style="text-align:center;width:100%;padding:40px;">
+          <h2>No products available</h2>
+          <p>Please check later or modify your search.</p>
+        </div>
+      {% endfor %}
+    </section>
+
+     <!-- Pagination Controls - Bottom -->
+    {% if products.has_other_pages %}
+    <div style="display: flex; justify-content: center; align-items: center; gap: 10px; padding: 40px 20px;">
+      {% if products.has_previous %}
+        <a href="?page=1" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; text-decoration: none; color: var(--text); border: 1px solid var(--glass-border);">« First</a>
+        <a href="?page={{ products.previous_page_number }}" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; text-decoration: none; color: var(--text); border: 1px solid var(--glass-border);">‹ Previous</a>
+      {% endif %}
+
+      <span style="padding: 10px 20px; background: var(--gradient-green); color: white; border-radius: 8px; font-weight: 600;">
+        Page {{ products.number }} of {{ products.paginator.num_pages }}
+      </span>
+
+      {% if products.has_next %}
+        <a href="?page={{ products.next_page_number }}" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; text-decoration: none; color: var(--text); border: 1px solid var(--glass-border);">Next ›</a>
+        <a href="?page={{ products.paginator.num_pages }}" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; text-decoration: none; color: var(--text); border: 1px solid var(--glass-border);">Last »</a>
+      {% endif %}
+    </div>
+    {% endif %}
+    
+  </main>
+  <script>
+function addToCart(productId) {
+    // TODO: Call your existing cart logic here (AJAX or form submit)
+    
+    // Change button text
+    const btn = document.getElementById('add-cart-' + productId);
+    btn.textContent = '✅ Added';
+    btn.disabled = true; // optional: prevent further clicks
+    
+    // Optional: change styling to indicate success
+    btn.style.backgroundColor = 'var(--cedar-green)';
+    btn.style.color = 'white';
+}
+</script>
+
+{% endblock %}

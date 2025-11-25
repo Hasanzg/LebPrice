@@ -1,0 +1,322 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extra_head_main %}
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --primary: #1a472a;
+      --accent: #2d7a4f;
+      --text: #2d3436;
+      --text-muted: #636e72;
+      --bg: #f8f9fa;
+      --card-bg: #ffffff;
+      --glass-border: rgba(0,0,0,0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    header {
+      background: var(--primary);
+      padding: 15px 30px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      height: 50px;
+      width: auto;
+    }
+
+    .search-bar {
+      display: flex;
+      gap: 10px;
+      flex: 1;
+      align-items: center;
+      background: white;
+      padding: 8px 12px;
+      border-radius: 50px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .search-bar input[type="text"] {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 8px 15px;
+      font-size: 14px;
+      background: transparent;
+    }
+
+    .search-bar select,
+    .search-bar input[type="number"] {
+      padding: 8px 12px;
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      font-size: 13px;
+      outline: none;
+      background: white;
+    }
+
+    .search-bar select {
+      min-width: 120px;
+      cursor: pointer;
+    }
+
+    .currency-input {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 10px;
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      background: white;
+    }
+
+    .currency-input span {
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .currency-input input {
+      width: 70px;
+      border: none;
+      outline: none;
+      font-size: 13px;
+    }
+
+    .currency-input input::-webkit-inner-spin-button,
+    .currency-input input::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .search-bar button {
+      background: var(--accent);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .search-bar button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(45,122,79,0.3);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .cart, .profile {
+      color: white;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      transition: all 0.3s;
+      font-size: 14px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .cart:hover, .profile:hover {
+      background: rgba(255,255,255,0.1);
+    }
+
+    .dropdown-wrapper {
+      position: relative;
+    }
+
+    .the-dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      margin-top: 10px;
+      min-width: 150px;
+      overflow: hidden;
+      z-index: 1000;
+    }
+
+    .dropdown-wrapper:hover .the-dropdown {
+      display: block;
+    }
+
+    .the-dropdown a {
+      display: block;
+      padding: 12px 20px;
+      color: var(--text);
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .the-dropdown a:hover {
+      background: var(--bg);
+    }
+
+    .the-dropdown a.bad {
+      color: #dc3545;
+    }
+
+    .the-dropdown a.bad:hover {
+      background: #ffe5e5;
+    }
+
+    nav.categories {
+      background: white;
+      padding: 0 30px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+    }
+
+    nav.categories a {
+      padding: 15px 20px;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s;
+      border-bottom: 3px solid transparent;
+    }
+
+    nav.categories a:hover {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    footer {
+      background: var(--primary);
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 50px;
+    }
+
+    footer a {
+      color: white;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 1200px) {
+      .search-bar {
+        flex-wrap: wrap;
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .search-bar {
+        width: 100%;
+      }
+
+      .header-actions {
+        width: 100%;
+        justify-content: center;
+      }
+
+      nav.categories {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+      }
+    }
+  </style>
+{% endblock %}
+
+{% block content_main %}
+  <header>
+    <a class="logo" href="{% url 'home' %}">
+      <img class="logo" src="{% static 'images/logo1.png' %}" alt="LebPrice Logo">
+    </a>
+    
+    <form class="search-bar" method="get" action="{% url 'home' %}">
+      <input type="text" name="q" placeholder="Search products..." value="{{ search|default:'' }}" />
+      
+      <!-- Category Dropdown -->
+      <select name="category" aria-label="Category">
+        <option value="">All Categories</option>
+        <option value="Groceries" {% if request.GET.category == 'Groceries' %}selected{% endif %}>Groceries</option>
+        <option value="Electronics" {% if request.GET.category == 'Electronics' %}selected{% endif %}>Electronics</option>
+        <option value="Sports" {% if request.GET.category == 'Sports' %}selected{% endif %}>Sports</option>
+        <option value="Stationery" {% if request.GET.category == 'Stationery' %}selected{% endif %}>Stationery</option>
+        <option value="Fashion" {% if request.GET.category == 'Fashion' %}selected{% endif %}>Fashion</option>
+      </select>
+      
+      <!-- Sort Dropdown -->
+      <select name="ordering" aria-label="Sort">
+        <option value="">Sort By</option>
+        <option value="name" {% if ordering == 'name' %}selected{% endif %}>Name ↑</option>
+        <option value="-name" {% if ordering == '-name' %}selected{% endif %}>Name ↓</option>
+        <option value="price" {% if ordering == 'price' %}selected{% endif %}>Price ↑</option>
+        <option value="-price" {% if ordering == '-price' %}selected{% endif %}>Price ↓</option>
+      </select>
+   
+      <!-- Min price -->
+      <div class="currency-input">
+        <span>$</span>
+        <input type="number" name="min_price" inputmode="decimal" step="0.01" 
+               placeholder="Min" value="{{ min_price }}">
+      </div>
+   
+      <!-- Max price -->
+      <div class="currency-input">
+        <span>$</span>
+        <input type="number" name="max_price" inputmode="decimal" step="0.01" 
+               placeholder="Max" value="{{ max_price }}">
+      </div>
+   
+      <button type="submit">
+        <i class="fa fa-search" style="color: white;"></i>
+      </button>
+    </form>
+    
+    <div class="header-actions">
+      <a href="http://localhost:8000/products/cart/" class="cart">🛒 Cart</a>  
+      <div class="dropdown-wrapper">
+        <a href="#" class="profile">👤 Profile ▾</a>
+        <div class="the-dropdown">
+          <a href="{% url 'profile' %}">My Profile</a>
+          <a href="{% url 'settings' %}">Settings</a>
+          <a href="{% url 'account_logout' %}" class="bad">Sign Out</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  {% block content %}{% endblock %}
+
+  <footer>
+    <p>📍 Beirut, Lebanon | 📧 <a href="mailto:lebprice.project@gmail.com">lebprice.project@gmail.com</a></p>
+  </footer>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% block extra_head_main %}
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{% static 'css/theme.css' %}">
+        <title>
+            {% block head_title %}
+            {% endblock head_title %}
+        </title>
+        {% block extra_head %}
+        {% endblock extra_head %}
+{% endblock %}
+{% block content_main %}
+{% block body %}
+            
+        <div class="signin-container">
+            <img src="{% static 'images/logo1.png' %}" alt="Google" class="first-page-img">
+            {% block content %}
+            {% endblock content %}
+            <div class="messages-container">
+                <ul>
+                    {% for message in messages %}
+                        {% if forloop.last %}
+                            <li>
+                                {{ message }} <button onclick="location.reload()">OK</button>
+                            </li>
+                        {% else %}
+                            <li>{{ message }}</li>
+                        {% endif %}
+                    {% endfor %}
+                    </ul>
+            </div>
+        </div>
+{% endblock body %}
+        {% block extra_body %}
+        {% endblock extra_body %}
+{% endblock %}
