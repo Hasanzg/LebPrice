@@ -60,7 +60,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'lebprice.project@gmail.com' 
-EMAIL_HOST_PASSWORD = 'pfvg pgtm skyy wtyt'
+EMAIL_HOST_PASSWORD = ''
 DEFAULT_FROM_EMAIL = 'lebprice.project@gmail.com' 
 
 MIDDLEWARE = [
