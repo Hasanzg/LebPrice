@@ -159,7 +159,3 @@ cart/        # Shopping cart
 k8s/         # Kubernetes deployment configs
 ```
 
-Demo:
-
-Login and signup page:
-
