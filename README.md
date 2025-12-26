@@ -1,5 +1,3 @@
-<img width="929" height="621" alt="image" src="https://github.com/user-attachments/assets/b1ef7115-de21-478a-9b5d-874b2c691ed1" /># LebPrice
-
 A price comparison platform for Lebanese e-commerce stores. Scrapes product data, tracks price histories, and provides a unified API for comparing prices across multiple retailers.
 
 ## Requirements
