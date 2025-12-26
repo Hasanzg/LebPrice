@@ -1,4 +1,4 @@
-# LebPrice
+<img width="929" height="621" alt="image" src="https://github.com/user-attachments/assets/b1ef7115-de21-478a-9b5d-874b2c691ed1" /># LebPrice
 
 A price comparison platform for Lebanese e-commerce stores. Scrapes product data, tracks price histories, and provides a unified API for comparing prices across multiple retailers.
 
@@ -31,6 +31,11 @@ currently scrapes each of *PC and Parts* and *Expert Zone*
 Can be expanded to scrape all types of stores, so long they have an online store.
 
 ## Features
+### Login And Signing up
+- User account creation with secure authentication
+- Email/password login support
+- Google Sign-In integration using Google OAuth
+- User profile customization and management
 
 ### Price Tracking
 - Automatic scraping from multiple Lebanese online stores
@@ -159,3 +164,29 @@ cart/        # Shopping cart
 k8s/         # Kubernetes deployment configs
 ```
 
+Demo:
+
+For main page before signing up or logging in:
+
+<img width="1218" height="805" alt="image" src="https://github.com/user-attachments/assets/10dc584f-25d3-4704-be85-b74d0e5a3486" />
+
+
+Signing in with google:
+
+<img width="929" height="621" alt="image" src="https://github.com/user-attachments/assets/7dccbce4-95ae-49dd-9ed8-b2d4e6fdf580" />
+
+<img width="1463" height="329" alt="image" src="https://github.com/user-attachments/assets/f7254466-e7bf-4934-999c-d56d6026ea79" />
+
+
+After logging in / Signing up, Main page:
+
+<img width="1895" height="922" alt="image" src="https://github.com/user-attachments/assets/64888c07-0472-4f74-b605-01ce73d7abe6" />
+
+
+Can search and sort as needed:
+
+<img width="1895" height="898" alt="image" src="https://github.com/user-attachments/assets/5cb7aa1a-efea-41ee-8c25-6e60bebf4417" />
+
+Can simulate cart and shows final price with VAT if not pre-included in the price.
+
+May also customize profile, add favorite shops, add profile picture, and more!
